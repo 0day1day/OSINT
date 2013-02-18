@@ -1,0 +1,35 @@
+====
+Dumping JSON Data Structure Global Keys for Twitter Global Trends
+====
+created_at
+as_of
+trends
+locations
+====
+Finished Dumping JSON Global Keys
+====
+Dumping JSON Data Structure Local Keys for Twitter Global Trends
+====
+url
+query
+name
+promoted_content
+events
+====
+Finished Dumping JSON Local Keys
+====
+Dumping Current Twitter Global Trending Topics
+====
+#AndThatsWhyYouAreSingle
+#MyFavoriteLineWhenImMad
+#IfItWereUpToMe
+Happy Birthday Spongebob
+Mexico Loves Justin
+Sage Stallone
+Gustav Klimt
+Today is National French Fry Day
+Wife and WiFi
+Social Media - A Good Thing or a Bad Thing
+====
+Finished Printing Twitter Global Trending Topics
+====
