@@ -11,12 +11,9 @@ __status__ = "Prototype"
 """
     Monitor Twitter Real Time Data Stream via a List of Twitter User ID's
     Anonymous       365235743
-    YourAnonNews    279390084
     OfficialNull    739250522
     OfficialAnonOps 358381825
     AnonIRC         336683669
-    AnonReloaded    816122462
-    AnonyOps        225235528
     wikileaks       16589206
 
 """
@@ -88,7 +85,7 @@ def twitterStream(follow_ids):
 
 
 def main():
-    follow_ids = [365235743, 279390084, 739250522, 358381825, 336683669, 816122462, 225235528, 16589206]
+    follow_ids = [365235743, 739250522, 358381825, 336683669, 16589206]
     for item in twitterStream(follow_ids):
         #CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension
         cef = 'CEF:0|Twitter RealTime Stream|Twitter|1.0|100|WatchList|1|'

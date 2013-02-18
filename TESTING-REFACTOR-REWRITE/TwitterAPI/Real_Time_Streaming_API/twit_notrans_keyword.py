@@ -46,7 +46,7 @@ def twitterStream(follow_ids, keywords):
 
 
 def main():
-    follow_ids = [365235743, 279390084, 739250522, 358381825, 336683669, 816122462, 225235528, 16589206]
+    follow_ids = [365235743, 739250522, 358381825, 336683669, 16589206]
     keywords = ["pastebin"]
     for item in twitterStream(follow_ids, keywords):
         #CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension
