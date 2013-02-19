@@ -112,8 +112,12 @@ def main():
     follow_ids = [365235743, 739250522, 358381825, 336683669, 16589206]
     for item in twitterStream(follow_ids):
         #CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension
-        cef = 'CEF:0|Twitter RealTime Stream|Twitter|1.0|100|WatchList|1|'
-        print(item)
+        cef = 'CEF:0|Twitter RealTime Stream|Twitter|1.0|100|WatchList|1| end=%s requestClientApplication=%s' \
+              ' suid=%s suser=%s spriv=%s duid=%s duser=%s dpriv=%s msg=%s' % (item['Ctime'], item['Platform'],
+                str(item['TwitterID']), item['ScreenName'], item['ProperName'], str(item['ReplyToID']),
+                item['ReplyToScreenName'], item['SourceLang'], item['Tweet'])
+        syslog(cef.encode('ascii', 'ignore'), level=CONFIG['LEVEL']['notice'], facility=CONFIG['FACILITY'] ['daemon'],
+               host='localhost', port=514)
 
 if __name__ == '__main__':
     main()
