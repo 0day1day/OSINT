@@ -1,7 +1,7 @@
 __date__ = "Nov 15, 2012"
 __author__ = "AlienOne"
 __copyright__ = "GPL"
-__credits__ = ["AlienOne"]
+__credits__ = ["Justin Jessup"]
 __license__ = "GPL"
 __version__ = "1.1.0"
 __maintainer__ = "AlienOne"
@@ -9,13 +9,12 @@ __email__ = "Justin@alienonesecurity.com"
 __status__ = "Production"
 
 
-import csv
-import datetime
 import requests
 import time
-import os
 import feedparser
+import daemon
 from bs4 import BeautifulSoup
+from syslog.syslog_tcp import *
 
 
 def getMalCode(rss_feed):
@@ -42,9 +41,8 @@ def getMalValues(rss_feed):
         yield malDict
 
 
-def virusTotalTest(csv_filename, rss_feed):
+def virusTotalTest(rss_feed):
     """Utilize VirusTotal Public API"""
-    f = csv.writer(open(csv_filename, "ab+"))
     for items in getMalValues(rss_feed):
         request_Url = "https://www.virustotal.com/vtapi/v2/file/report"
         parameters = {"resource": items['MD5'],
@@ -64,28 +62,35 @@ def virusTotalTest(csv_filename, rss_feed):
                             keys = element_rend[0::2]
                             values = element_rend[1::2]
                             element_dict = dict(zip(keys, values))
-                            f.writerow([element_dict['Analysis date'].strip('\n ')[0:19],
-                                        items['RequestURL'],items['IPAddress'],
-                                        items['CountryCode'],"ASN" + str(items['ASN']),
-                                        element_dict['SHA256'],element_dict['SHA1'],items['MD5'],
-                                        element_dict['File size'][0:9].strip(' ').strip('('),
-                                        element_dict['File name'],element_dict['File type'],
-                                        str(data["positives"]) + '%', data["permalink"]])
+                            analysis_date = element_dict['Analysis date'].strip('\n ')[0:19]
+                            request_url = items['RequestURL']
+                            ip_address = items['IPAddress']
+                            asn = "ASN" + str(items['ASN'])
+                            sha256_hash = element_dict['SHA256']
+                            sha1_hash = element_dict['SHA1']
+                            md5_hash = element_dict['MD5']
+                            file_size = element_dict['File size'][0:9].strip(' ').strip('(')
+                            file_name = element_dict['File name']
+                            file_type = element_dict['File type']
+                            av_rate = str(data["positives"]) + '%'
+                            vt_link = data["permalink"]
+                            cef = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|100|Low AV Detection Rate|1| end=%s' \
+                                  ' request=%s src=%s shost=%s cs1=%s cs2=%s cs3=%s fileHash=%s fileId=%s'\
+                                  ' filetype=%s cs4=%s requestClientApplication=%s' % (analysis_date, request_url,
+                                  ip_address, asn, sha256_hash,
+                                  sha1_hash, md5_hash, file_size,
+                                  file_name, file_type, av_rate, vt_link)
+                            sock = syslog_tcp_open('127.0.0.1', port=1026)
+                            syslog_tcp(sock, "%s" % cef, priority=0, facility=7)
+                            time.sleep(0.01)
+                            syslog_tcp_close(sock)
         time.sleep(16)
 
 
 def main():
     rss_feed = 'http://malc0de.com/rss/'
-    the_date = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    csv_filename = os.path.join("Product/",
-                                "VirusTotal-Report-Less-Than-15-Percent-Detection-Rate" + '-' + the_date + '.csv')
-    f = open(csv_filename, "wb+")
-    w = csv.writer(f)
-    w.writerow(["Scan Date","RequestURL","IPAddress","CountryCode",
-                "ASN","SHA256","SHA1","MD5","File Size","File Name",
-                "File Type","AV Detection Rate","VirusTotal Report Link"])
-    f.close()
-    virusTotalTest(csv_filename, rss_feed)
+    virusTotalTest(rss_feed)
 
 if __name__ == '__main__':
-    main()
+    with daemon.basic_daemonize():
+        main()
