@@ -43,6 +43,7 @@ def getMalValues(rss_feed):
 
 def virusTotalTest(rss_feed):
     """Utilize VirusTotal Public API"""
+    sock = syslog_tcp_open('127.0.0.1', port=1026)
     for items in getMalValues(rss_feed):
         request_Url = "https://www.virustotal.com/vtapi/v2/file/report"
         parameters = {"resource": items['MD5'],
@@ -80,11 +81,10 @@ def virusTotalTest(rss_feed):
                                   ip_address, asn, sha256_hash,
                                   sha1_hash, md5_hash, file_size,
                                   file_name, file_type, av_rate, vt_link)
-                            sock = syslog_tcp_open('127.0.0.1', port=1026)
                             syslog_tcp(sock, "%s" % cef, priority=0, facility=7)
-                            time.sleep(0.01)
-                            syslog_tcp_close(sock)
+
         time.sleep(16)
+    syslog_tcp_close(sock)
 
 
 def main():

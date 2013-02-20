@@ -94,16 +94,16 @@ def twitterStream(follow_ids):
 
 def main():
     follow_ids = [365235743, 739250522, 358381825, 336683669, 16589206]
+    sock = syslog_tcp_open('127.0.0.1', port=1026)
     for item in twitterStream(follow_ids):
         #CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension
         cef = 'CEF:0|Twitter RealTime Stream|Twitter|1.0|100|WatchList|1| end=%s requestClientApplication=%s' \
               ' suid=%s suser=%s spriv=%s duid=%s duser=%s dpriv=%s msg=%s' % (item['Ctime'], item['Platform'],
                 str(item['TwitterID']), item['ScreenName'], item['ProperName'], str(item['ReplyToID']),
                 item['ReplyToScreenName'], item['SourceLang'], item['Tweet'])
-        sock = syslog_tcp_open('127.0.0.1', port=1026)
         syslog_tcp(sock, "%s" % cef, priority=0, facility=7)
-        time.sleep(0.01)
-        syslog_tcp_close(sock)
+    time.sleep(0.01)
+    syslog_tcp_close(sock)
 
 
 if __name__ == '__main__':

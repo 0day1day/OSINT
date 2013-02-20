@@ -10,12 +10,9 @@ __status__ = "Prototype"
 
 """
     Monitor Twitter Real Time Data Stream via a List of Twitter User ID's
-    Anonymous       365235743
-    OfficialNull    739250522
-    OfficialAnonOps 358381825
-    AnonIRC         336683669
-    wikileaks       16589206
-
+    Monitoring:
+    ====
+    The_APT1_Team   1199086782
 """
 
 
@@ -58,17 +55,17 @@ def twitterStream(follow_ids):
 
 
 def main():
-    follow_ids = [365235743, 739250522, 358381825, 336683669, 16589206]
+    follow_ids = [1199086782]
+    sock = syslog_tcp_open('127.0.0.1', port=1026)
     for item in twitterStream(follow_ids):
         #CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension
         cef = 'CEF:0|Twitter RealTime Stream|Twitter|1.0|100|WatchList|1| end=%s requestClientApplication=%s' \
               ' suid=%s suser=%s spriv=%s duid=%s duser=%s dpriv=%s msg=%s' % (item['Ctime'], item['Platform'],
                 str(item['TwitterID']), item['ScreenName'], item['ProperName'], str(item['ReplyToID']),
                 item['ReplyToScreenName'], item['SourceLang'], item['Tweet'])
-        sock = syslog_tcp_open('127.0.0.1', port=1026)
         syslog_tcp(sock, "%s" % cef, priority=0, facility=7)
-        time.sleep(0.01)
-        syslog_tcp_close(sock)
+    time.sleep(0.01)
+    syslog_tcp_close(sock)
 
 
 if __name__ == '__main__':
