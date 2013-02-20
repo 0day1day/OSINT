@@ -1,7 +1,7 @@
 __date__ = "February 15, 2013"
 __author__ = "AlienOne"
 __copyright__ = "GPL"
-__credits__ = ["Justin Jessup", "Adam Reber"]
+__credits__ = ["Justin Jessup"]
 __license__ = "GPL"
 __version__ = "0.0.1"
 __maintainer__ = "AlienOne"
@@ -21,28 +21,7 @@ __status__ = "Prototype"
 
 import tweetstream
 import time
-import socket
-
-
-CONFIG={}
-CONFIG['FACILITY'] = {
-    'kern': 0, 'user': 1, 'mail': 2, 'daemon': 3,
-    'auth': 4, 'syslog': 5, 'lpr': 6, 'news': 7,
-    'uucp': 8, 'cron': 9, 'authpriv': 10, 'ftp': 11,
-    'local0': 16, 'local1': 17, 'local2': 18, 'local3': 19,
-    'local4': 20, 'local5': 21, 'local6': 22, 'local7': 23,
-    }
-CONFIG['LEVEL'] = {
-    'emerg': 0, 'alert':1, 'crit': 2, 'err': 3,
-    'warning': 4, 'notice': 5, 'info': 6, 'debug': 7
-}
-
-
-def syslog(message, level=CONFIG['LEVEL']['notice'], facility=CONFIG['FACILITY']['daemon'], host='localhost', port=5517):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    data = '<%d>%s' % (level + facility*8, message)
-    sock.sendto(data, (host, port))
-    sock.close()
+from syslog.syslog_tcp import *
 
 
 def twitterStream(follow_ids):
@@ -85,8 +64,11 @@ def main():
               ' suid=%s suser=%s spriv=%s duid=%s duser=%s dpriv=%s msg=%s' % (item['Ctime'], item['Platform'],
                 str(item['TwitterID']), item['ScreenName'], item['ProperName'], str(item['ReplyToID']),
                 item['ReplyToScreenName'], item['SourceLang'], item['Tweet'])
-        syslog(cef.encode('ascii', 'ignore'), level=CONFIG['LEVEL']['notice'], facility=CONFIG['FACILITY'] ['daemon'],
-               host='localhost', port=514)
+        sock = syslog_tcp_open('127.0.0.1', port=1026)
+        syslog_tcp(sock, "%s" % cef, priority=0, facility=7)
+        time.sleep(0.01)
+        syslog_tcp_close(sock)
+
 
 if __name__ == '__main__':
     main()

@@ -1,7 +1,7 @@
 __date__ = "February 15, 2013"
 __author__ = "AlienOne"
 __copyright__ = "GPL"
-__credits__ = ["Justin Jessup", "Adam Reber"]
+__credits__ = ["Justin Jessup"]
 __license__ = "GPL"
 __version__ = "0.0.1"
 __maintainer__ = "AlienOne"
@@ -9,6 +9,7 @@ __email__ = "Justin@alienonesecurity.com"
 __status__ = "Prototype"
 
 """
+    Google Translate Facility Included
     Monitor Twitter Real Time Data Stream via a List of Twitter User ID's
     Anonymous       365235743
     OfficialNull    739250522
@@ -21,28 +22,8 @@ __status__ = "Prototype"
 
 import tweetstream
 import time
-import socket
 from apiclient.discovery import build
-
-CONFIG={}
-CONFIG['FACILITY'] = {
-    'kern': 0, 'user': 1, 'mail': 2, 'daemon': 3,
-    'auth': 4, 'syslog': 5, 'lpr': 6, 'news': 7,
-    'uucp': 8, 'cron': 9, 'authpriv': 10, 'ftp': 11,
-    'local0': 16, 'local1': 17, 'local2': 18, 'local3': 19,
-    'local4': 20, 'local5': 21, 'local6': 22, 'local7': 23,
-    }
-CONFIG['LEVEL'] = {
-    'emerg': 0, 'alert':1, 'crit': 2, 'err': 3,
-    'warning': 4, 'notice': 5, 'info': 6, 'debug': 7
-}
-
-
-def syslog(message, level=CONFIG['LEVEL']['notice'], facility=CONFIG['FACILITY']['daemon'], host='localhost', port=5517):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    data = '<%d>%s' % (level + facility*8, message)
-    sock.sendto(data, (host, port))
-    sock.close()
+from syslog.syslog_tcp import *
 
 
 def google_trans(element_list, src_lang):
