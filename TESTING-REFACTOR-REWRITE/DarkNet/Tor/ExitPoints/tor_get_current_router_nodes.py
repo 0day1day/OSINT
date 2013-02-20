@@ -74,6 +74,7 @@ def main():
     tor_routerNodes()
     tor_exitNodes()
     time.sleep(86400)
+
 if __name__ == '__main__':
     with daemon.DaemonContext():
         main()
