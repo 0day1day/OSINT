@@ -14,7 +14,7 @@ __status__ = "Prototype"
 import tweetstream
 import time
 import socket
-from apiclient.discovery import build
+
 
 CONFIG={}
 CONFIG['FACILITY'] = {
@@ -29,11 +29,13 @@ CONFIG['LEVEL'] = {
     'warning': 4, 'notice': 5, 'info': 6, 'debug': 7
 }
 
+
 def syslog(message, level=CONFIG['LEVEL']['notice'], facility=CONFIG['FACILITY']['daemon'], host='localhost', port=5517):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     data = '<%d>%s' % (level + facility*8, message)
     sock.sendto(data, (host, port))
     sock.close()
+
 
 def twitterStream(follow_ids, keywords):
     """Watch Twitter RealTime Stream for WatchList Elements"""
@@ -75,9 +77,9 @@ def main():
     #CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension
         cef = 'CEF:0|Twitter RealTime Stream|Twitter|1.0|100|WatchList|1| end=%s requestClientApplication=%s'\
               ' suid=%s suser=%s spriv=%s duid=%s duser=%s dpriv=%s msg=%s' % (item['Ctime'], item['Platform'],
-                str(item['TwitterID']), item['ScreenName'], item['ProperName'], str(item['ReplyToID']),
-                item['ReplyToScreenName'], item['SourceLang'], item['Tweet'])
-        syslog(cef.encode('ascii', 'ignore'), level=CONFIG['LEVEL']['notice'], facility=CONFIG['FACILITY'] ['daemon'],
+              str(item['TwitterID']), item['ScreenName'], item['ProperName'], str(item['ReplyToID']),
+              item['ReplyToScreenName'], item['SourceLang'], item['Tweet'])
+        syslog(cef.encode('ascii', 'ignore'), level=CONFIG['LEVEL']['notice'], facility=CONFIG['FACILITY']['daemon'],
                host='localhost', port=514)
 
 if __name__ == '__main__':

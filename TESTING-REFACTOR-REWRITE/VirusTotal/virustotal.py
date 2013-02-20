@@ -76,7 +76,7 @@ def virusTotalTest(rss_feed):
                             vt_link = data["permalink"]
                             cef = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|100|Low AV Detection Rate|1| end=%s' \
                                   ' request=%s src=%s shost=%s cs1=%s cs2=%s cs3=%s fileHash=%s fileId=%s'\
-                                  ' filetype=%s cs4=%s requestClientApplication=%s' % (analysis_date, request_url,
+                                  ' fileType=%s cs4=%s requestClientApplication=%s' % (analysis_date, request_url,
                                   ip_address, asn, sha256_hash,
                                   sha1_hash, md5_hash, file_size,
                                   file_name, file_type, av_rate, vt_link)
@@ -90,7 +90,7 @@ def virusTotalTest(rss_feed):
 def main():
     rss_feed = 'http://malc0de.com/rss/'
     virusTotalTest(rss_feed)
-
+    time.sleep(43200)
 if __name__ == '__main__':
     with daemon.DaemonContext():
         main()

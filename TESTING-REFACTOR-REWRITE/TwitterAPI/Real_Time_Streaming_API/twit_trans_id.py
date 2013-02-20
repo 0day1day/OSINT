@@ -37,11 +37,13 @@ CONFIG['LEVEL'] = {
     'warning': 4, 'notice': 5, 'info': 6, 'debug': 7
 }
 
+
 def syslog(message, level=CONFIG['LEVEL']['notice'], facility=CONFIG['FACILITY']['daemon'], host='localhost', port=5517):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     data = '<%d>%s' % (level + facility*8, message)
     sock.sendto(data, (host, port))
     sock.close()
+
 
 def google_trans(element_list, src_lang):
     """Send Element to Google Translate API - Translate From Source Lang to English"""
