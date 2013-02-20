@@ -92,5 +92,5 @@ def main():
     virusTotalTest(rss_feed)
 
 if __name__ == '__main__':
-    with daemon.basic_daemonize():
+    with daemon.DaemonContext():
         main()
