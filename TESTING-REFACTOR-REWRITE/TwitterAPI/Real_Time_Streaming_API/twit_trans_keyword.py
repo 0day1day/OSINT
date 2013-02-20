@@ -15,6 +15,7 @@ __status__ = "Prototype"
 
 import tweetstream
 import time
+import daemon
 from apiclient.discovery import build
 from syslog.syslog_tcp import *
 
@@ -98,5 +99,7 @@ def main():
         time.sleep(0.01)
         syslog_tcp_close(sock)
 
+
 if __name__ == '__main__':
-    main()
+    with daemon.DaemonContext():
+        main()

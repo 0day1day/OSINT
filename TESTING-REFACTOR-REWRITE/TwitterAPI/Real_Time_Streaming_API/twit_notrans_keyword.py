@@ -13,6 +13,7 @@ __status__ = "Prototype"
 
 import tweetstream
 import time
+import daemon
 from syslog.syslog_tcp import *
 
 
@@ -65,4 +66,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    with daemon.DaemonContext():
+        main()

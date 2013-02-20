@@ -22,6 +22,7 @@ __status__ = "Prototype"
 
 import tweetstream
 import time
+import daemon
 from apiclient.discovery import build
 from syslog.syslog_tcp import *
 
@@ -99,8 +100,12 @@ def main():
               ' suid=%s suser=%s spriv=%s duid=%s duser=%s dpriv=%s msg=%s' % (item['Ctime'], item['Platform'],
                 str(item['TwitterID']), item['ScreenName'], item['ProperName'], str(item['ReplyToID']),
                 item['ReplyToScreenName'], item['SourceLang'], item['Tweet'])
-        syslog(cef.encode('ascii', 'ignore'), level=CONFIG['LEVEL']['notice'], facility=CONFIG['FACILITY'] ['daemon'],
-               host='localhost', port=514)
+        sock = syslog_tcp_open('127.0.0.1', port=1026)
+        syslog_tcp(sock, "%s" % cef, priority=0, facility=7)
+        time.sleep(0.01)
+        syslog_tcp_close(sock)
+
 
 if __name__ == '__main__':
-    main()
+    with daemon.DaemonContext():
+        main()

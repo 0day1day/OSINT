@@ -91,6 +91,8 @@ def main():
     rss_feed = 'http://malc0de.com/rss/'
     virusTotalTest(rss_feed)
     time.sleep(43200)
+
+
 if __name__ == '__main__':
     with daemon.DaemonContext():
         main()
