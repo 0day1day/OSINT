@@ -14,6 +14,7 @@ import re
 import time
 import feedparser
 import daemon
+from netaddr import IPAddress
 from bs4 import BeautifulSoup
 from syslog.syslog_tcp import *
 
@@ -32,12 +33,9 @@ def convertToBytes(data):
 
 
 def ip_address_is_valid(address):
-    try:
-        socket.inet_aton(address)
-    except socket.error:
-        return False
-    else:
-        return True
+    ip = IPAddress(address)
+    if ip.is_unicast() and not ip.is_private():
+        yield address
 
 
 def grab_ip(requestUrl_Text):
