@@ -10,11 +10,48 @@ __status__ = "Production"
 
 
 import requests
+import re
 import time
 import feedparser
 import daemon
 from bs4 import BeautifulSoup
 from syslog.syslog_tcp import *
+
+
+def convertToBytes(data):
+    sizes = ["KB", "MB", "GB", "TB"]
+    for i, ending in enumerate(sizes):
+        if ending in data:
+            multiplier = 1024 ** (i + 1)
+            data = float(data[0:data.index(ending)].strip())
+            return int(data * multiplier)
+    else:
+        if "B" in data:
+            data = float(data[0:data.index("B")].strip())
+        return int(data)
+
+
+def ip_address_is_valid(address):
+    try:
+        socket.inet_aton(address)
+    except socket.error:
+        return False
+    else:
+        return True
+
+
+def grab_ip(requestUrl_Text):
+    ip_search = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
+    for ip_address in ip_search.findall(requestUrl_Text):
+        if ip_address_is_valid(ip_address):
+            yield ip_address
+
+
+def get_c2_ip(virus_total_url):
+    request_urlGet = requests.get(virus_total_url)
+    request_Text = request_urlGet.text + "#behavioural-info"
+    for item in grab_ip(request_Text):
+        yield item
 
 
 def getMalCode(rss_feed):
@@ -63,25 +100,36 @@ def virusTotalTest(rss_feed):
                             keys = element_rend[0::2]
                             values = element_rend[1::2]
                             element_dict = dict(zip(keys, values))
-                            analysis_date = element_dict['Analysis date'].strip('\n ')[0:19]
-                            request_url = items['RequestURL']
-                            ip_address = items['IPAddress']
-                            asn = "ASN" + str(items['ASN'])
-                            sha256_hash = element_dict['SHA256']
-                            sha1_hash = element_dict['SHA1']
-                            md5_hash = element_dict['MD5']
-                            file_size = element_dict['File size'][0:9].strip(' ').strip('(')
-                            file_name = element_dict['File name']
-                            file_type = element_dict['File type']
-                            av_rate = str(data["positives"]) + '%'
-                            vt_link = data["permalink"]
-                            cef = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|100|Low AV Detection Rate|1| end=%s' \
-                                  ' request=%s src=%s shost=%s cs1=%s cs2=%s cs3=%s fileHash=%s fileId=%s'\
-                                  ' fileType=%s cs4=%s requestClientApplication=%s' % (analysis_date, request_url,
-                                  ip_address, asn, sha256_hash,
-                                  sha1_hash, md5_hash, file_size,
-                                  file_name, file_type, av_rate, vt_link)
-                            syslog_tcp(sock, "%s" % cef, priority=0, facility=7)
+                            analysis_date = element_dict['Analysis date'].strip()[0:19]
+                            request_url = items['RequestURL'].strip()
+                            ip_address = items['IPAddress'].strip()
+                            asn = "ASN" + str(items['ASN']).strip()
+                            sha256_hash = element_dict['SHA256'].strip()
+                            sha1_hash = element_dict['SHA1'].strip()
+                            md5_hash = element_dict['MD5'].strip()
+                            file_size = convertToBytes(element_dict['File size'][0:9].strip(' ').strip('('))
+                            file_name = element_dict['File name'].strip()
+                            file_type = element_dict['File type'].strip()
+                            av_rate = str(data["positives"]).strip() + '%'
+                            vt_link = data["permalink"].strip()
+                            for c2_item in get_c2_ip(vt_link):
+                                if c2_item is not None:
+                                    cef_vt_c2_ip = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|C2|VirusTotal C2|1|' \
+                                                   'end=%s request=%s src=%s dst=%s shost=%s cs1=%s cs2=%s ' \
+                                                   'cs3=%s fsize=%s fileId=%s fileType=%s cs4=%s ' \
+                                                   'requestClientApplication=%s'\
+                                                   % (analysis_date, request_url, ip_address, c2_item, asn, sha256_hash,
+                                                      sha1_hash, md5_hash, file_size, file_name,
+                                                      file_type, av_rate, vt_link)
+                                    syslog_tcp(sock, "%s" % cef_vt_c2_ip, priority=0, facility=7)
+                                else:
+                                    cef_vt = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|Exploit|VirusTotal ' \
+                                             'Exploit|1| end=%s ' \
+                                             'request=%s src=%s shost=%s cs1=%s cs2=%s cs3=%s fsize=%s fileId=%s ' \
+                                             'fileType=%s cs4=%s requestClientApplication=%s' \
+                                             % (analysis_date, request_url, ip_address, asn, sha256_hash,
+                                                sha1_hash, md5_hash, file_size, file_name, file_type, av_rate, vt_link)
+                                    syslog_tcp(sock, "%s" % cef_vt, priority=0, facility=7)
 
         time.sleep(16)
     syslog_tcp_close(sock)
@@ -90,9 +138,10 @@ def virusTotalTest(rss_feed):
 def main():
     rss_feed = 'http://malc0de.com/rss/'
     virusTotalTest(rss_feed)
-    time.sleep(43200)
+    #time.sleep(43200)
 
 
 if __name__ == '__main__':
-    with daemon.DaemonContext():
-        main()
+    main()
+    # with daemon.DaemonContext():
+    #     main()
