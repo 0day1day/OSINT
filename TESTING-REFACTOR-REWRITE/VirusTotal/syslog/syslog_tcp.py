@@ -1,5 +1,5 @@
 import socket
-
+from SyslogProtocol import SyslogProtocol
 
 def syslog_tcp_open(host='127.0.0.1', port=514):
     """Open TCP Socket to Syslog Server"""
