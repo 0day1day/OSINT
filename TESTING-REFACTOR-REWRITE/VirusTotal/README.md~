@@ -1,14 +1,14 @@
-#####Malc0de + Virustotal - ArcSight Use Case
+###Malc0de + Virustotal - ArcSight Use Case
  
-#####Data Sources 
+####Data Sources 
 - www.malc0de.com/rss
 - www.virustotal.com
 
-#####Use Case Description
+####Use Case Description
 The function of this use case is to locate CND threat indicators associated with malware samples collected by Malc0de, that have an Anti Virus detection rate of less than or equal to 15%. Strategically one would infer that indicators culled from malware samples with low AV detection rate have a higher degree of model confidence. 
 VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus vendors with current signatures. Within the scope of this use case we pull indicator attribute information from both malc0de and VirusTotal for inclusion into ArcSight/SIEM based real time alerting use cases. Note we have observed in the past malc0de stumbling upon APT/1 indicators of interest, hence the strategic value of the indicator attribute information culled from the data sources. 
 
-#####Collection & Processing Methodology 
+####Collection & Processing Methodology 
 - Cull indicators from malc0de - HTTP GET Request - Python XML parsing 
 - Send MD5 hash to VirusTotal API to pull report data - HTTP REST Request to API - Return report as JSON Object. 
 - Generate ArcSight CEF event for malware samples with AV detection rate of less than 15% 
@@ -18,7 +18,7 @@ VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus 
 - C2 Exploit events are associated with C2 indicators culled from the Behavioral section of the Virustotal report - VirusTotal detonated malware within a sandbox environment and collects UDP/TCP communications with IP/FQDN C2 assets. 
 - CEF events are sent to an ArcSight CEF Smart Connector running on localhost - via a Python TCP syslog client
 
-#####Culled Attribute to ArcSight Mappings 
+####Culled Attribute to ArcSight Mappings 
 **Python Object - ArcSight Schema Field - Description**
 - analysis_date => EndTime => Date and Time malware sample was analized by VirusTotal
 - request_url => RequestUrl => Malicious RequestUrl String
@@ -42,7 +42,7 @@ VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus 
 - DeviceEventClassID => C2 => Only if C2 Attributes 
 - DeviceEventClassID => Exploit => Only if Exploit Attributes 
 
-#####ArcSight Content Development 
+####ArcSight Content Development 
 - Data types that can be correlated against the VirusTotal data type - include any data types with IP/FQDN data focal points 
 - Two Real Time Rules iterate and fire aginst the "VirusTotal Exploit" & "VirusTotal C2" events populating two Active Lists 
 - Active List #1 => 24 hour aged Active List of Exploit IP/FQD/Hash/Filename attribute information
@@ -51,12 +51,10 @@ VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus 
 - More complex correlation use cases can be created against other data types with IP/FQDN indicators - or other global use cases
 - Additionally more complex use case would be to alert if any IP/FQDN has been observed in the past touching the customer infrastructure - Recidivism Use Case 
 
-#####Long Term Deployment
+####Long Term Deployment
 - Implementation runs as a daemon process on system
 
-#####TODO
+####TODO
 - regex method to cull C2 FQDN indicators 
 - Include Logging facility 
 - Email alerting if network communications fail 
-
-
