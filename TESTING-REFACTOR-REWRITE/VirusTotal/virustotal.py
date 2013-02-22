@@ -107,7 +107,7 @@ def virusTotalTest(rss_feed):
         data = r1.json()
         if data is not None:
             if data["response_code"] == 1:
-                if data["positives"] <= 15:
+                if data["positives"] <= 96:
                     r = requests.get(data["permalink"])
                     if r.status_code == 200:
                         soup = BeautifulSoup(r.text)
@@ -126,11 +126,12 @@ def virusTotalTest(rss_feed):
                             sha1_hash = element_dict['SHA1'].strip()
                             md5_hash = element_dict['MD5'].strip()
                             file_size = convertToBytes(element_dict['File size'][0:9].strip(' ').strip('('))
-                            file_name = element_dict['File name'].strip()
+                            file_name = str(element_dict['File name'].strip())
                             file_type = element_dict['File type'].strip()
                             av_rate = str(data["positives"]).strip() + '%'
-                            vt_link = data["permalink"].strip()
-
+                            vt_link = str(data["permalink"].strip())
+                            print(analysis_date, request_url, ip_address, asn, sha256_hash,
+                                  sha1_hash, md5_hash, file_size, file_name, file_type, av_rate, vt_link)
                             for c2_item in cull_c2(str(vt_link)):
                                 if c2_item is not None:
                                     cef_vt_c2_ip = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|C2|VirusTotal C2|1|' \
@@ -143,11 +144,11 @@ def virusTotalTest(rss_feed):
                                     syslog_tcp(sock, "%s" % cef_vt_c2_ip, priority=0, facility=7)
 
                             cef_vt = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|Exploit|VirusTotal ' \
-                                            'Exploit|1| end=%s ' \
-                                            'request=%s src=%s shost=%s cs1=%s cs2=%s cs3=%s fsize=%s fileId=%s ' \
-                                            'fileType=%s cs4=%s requestClientApplication=%s' \
-                                            % (analysis_date, request_url, ip_address, asn, sha256_hash,
-                                            sha1_hash, md5_hash, file_size, file_name, file_type, av_rate, vt_link)
+                                     'Exploit|1| end=%s ' \
+                                     'request=%s src=%s shost=%s cs1=%s cs2=%s cs3=%s fsize=%s fileId=%s ' \
+                                'fileType=%s cs4=%s requestClientApplication=%s' \
+                                % (analysis_date, request_url, ip_address, asn, sha256_hash,
+                                   sha1_hash, md5_hash, file_size, file_name, file_type, av_rate, vt_link)
                             syslog_tcp(sock, "%s" % cef_vt, priority=0, facility=7)
 
         time.sleep(16)
