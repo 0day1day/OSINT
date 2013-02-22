@@ -1,8 +1,8 @@
 #####Malc0de + Virustotal - ArcSight Use Case 
 
 #####Data Sources 
-- www.malc0de.com/rss XML/RSS 
-- www.virustotal.com API
+- www.malc0de.com/rss
+- www.virustotal.com
 
 #####Use Case Description
 The function of this use case is to locate CND threat indicators associated with malware samples collected by Malc0de, that have an Anti Virus detection rate of less than or equal to 15%. 
