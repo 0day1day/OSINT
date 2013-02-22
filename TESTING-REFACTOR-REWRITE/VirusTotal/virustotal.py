@@ -107,7 +107,7 @@ def virusTotalTest(rss_feed):
         data = r1.json()
         if data is not None:
             if data["response_code"] == 1:
-                if data["positives"] <= 96:
+                if data["positives"] <= 15:
                     r = requests.get(data["permalink"])
                     if r.status_code == 200:
                         soup = BeautifulSoup(r.text)
