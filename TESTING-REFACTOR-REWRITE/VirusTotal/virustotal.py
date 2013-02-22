@@ -50,7 +50,9 @@ def cull_c2(requestUrl):
         c2_udp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-1]
     except AttributeError or IndexError:
         return
+
     c2_ip_list = []
+
     for item in c2_tcp_connections:
         item2 = re.sub("\n", " ", str(item))
         item3 = re.sub(":", " ", item2)
@@ -64,6 +66,7 @@ def cull_c2(requestUrl):
         ip_search = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
         c2_ip_list.append(ip_search.findall(item3))
     filtered_list = filter(None, c2_ip_list)
+
     for element in flatten_lists(filtered_list):
         if element is not None:
             yield element
@@ -127,6 +130,7 @@ def virusTotalTest(rss_feed):
                             file_type = element_dict['File type'].strip()
                             av_rate = str(data["positives"]).strip() + '%'
                             vt_link = data["permalink"].strip()
+                            
                             for c2_item in cull_c2(str(vt_link)):
                                 print(c2_item)
                                 if c2_item is not None:

@@ -11,7 +11,7 @@ def syslog_tcp_open(host='127.0.0.1', port=514):
 def syslog_tcp(sock, message, priority=0, facility=0):
     """Send TCP Event via Syslog Protocol"""
     # Uncomment to DEBUG syslog messages
-    #print(message)
+    print(message)
     data = SyslogProtocol.encode(facility, priority, message)
     sock.send(data + '\n')
 
