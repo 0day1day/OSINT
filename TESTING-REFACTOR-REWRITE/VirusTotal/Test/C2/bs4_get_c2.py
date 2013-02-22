@@ -18,8 +18,11 @@ def cull_c2(requestUrl):
     request_urlGet = requests.get(requestUrl)
     request_Text = request_urlGet.text + "#behavioural-info"
     soup = BeautifulSoup(request_Text)
-    c2_tcp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-2]
-    c2_udp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-1]
+    try:
+        c2_tcp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-2]
+        c2_udp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-1]
+    except AttributeError:
+        return
     c2_ip_list = []
     for item in c2_tcp_connections:
         item2 = re.sub("\n", " ", str(item))
@@ -42,7 +45,7 @@ def cull_c2(requestUrl):
 def main():
     #requestUrl = "https://www.virustotal.com/file/8f51bec89429d4b3ddaa7a311a12372441eba16359be3212209cce9b0d508e3e/analysis/1361398687/"
     #requestUrl = "https://www.virustotal.com/en/file/561f8bf5d1b6bf32eafc92b91291feb8/analysis/"
-    requestUrl = "https://www.virustotal.com/en/file/245b5b5fe8ce4134f87f04e1cd38b46f/analysis/"
+    requestUrl = "https://www.virustotal.com/file/a913d2fa305ffca7ce76ab0cccd852d85f38f87929e9471deac1b0252571f5df/analysis/1361542830/"
     for item in cull_c2(requestUrl):
         print item
 

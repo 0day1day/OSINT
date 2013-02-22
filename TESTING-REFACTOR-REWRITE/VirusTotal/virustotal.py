@@ -14,8 +14,6 @@ import re
 import time
 import feedparser
 import daemon
-from netaddr import IPAddress
-from netaddr import IPRange
 from bs4 import BeautifulSoup
 from syslog.syslog_tcp import *
 
@@ -47,8 +45,11 @@ def cull_c2(requestUrl):
     request_urlGet = requests.get(requestUrl)
     request_Text = request_urlGet.text + "#behavioural-info"
     soup = BeautifulSoup(request_Text)
-    c2_tcp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-2]
-    c2_udp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-1]
+    try:
+        c2_tcp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-2]
+        c2_udp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-1]
+    except AttributeError:
+        return
     c2_ip_list = []
     for item in c2_tcp_connections:
         item2 = re.sub("\n", " ", str(item))
@@ -66,13 +67,6 @@ def cull_c2(requestUrl):
     for element in flatten_lists(filtered_list):
         if element is not None:
             yield element
-
-
-def get_c2_ip(virus_total_url):
-    request_urlGet = requests.get(virus_total_url)
-    request_Text = request_urlGet.text + "#behavioural-info"
-    for item in cull_c2(request_Text):
-        yield item
 
 
 def getMalCode(rss_feed):
@@ -133,7 +127,8 @@ def virusTotalTest(rss_feed):
                             file_type = element_dict['File type'].strip()
                             av_rate = str(data["positives"]).strip() + '%'
                             vt_link = data["permalink"].strip()
-                            for c2_item in get_c2_ip(vt_link):
+                            for c2_item in cull_c2(str(vt_link)):
+                                print(c2_item)
                                 if c2_item is not None:
                                     cef_vt_c2_ip = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|C2|VirusTotal C2|1|' \
                                                    'end=%s request=%s src=%s dst=%s shost=%s cs1=%s cs2=%s ' \
@@ -143,14 +138,14 @@ def virusTotalTest(rss_feed):
                                                       sha1_hash, md5_hash, file_size, file_name,
                                                       file_type, av_rate, vt_link)
                                     syslog_tcp(sock, "%s" % cef_vt_c2_ip, priority=0, facility=7)
-                                else:
-                                    cef_vt = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|Exploit|VirusTotal ' \
-                                             'Exploit|1| end=%s ' \
-                                             'request=%s src=%s shost=%s cs1=%s cs2=%s cs3=%s fsize=%s fileId=%s ' \
-                                             'fileType=%s cs4=%s requestClientApplication=%s' \
-                                             % (analysis_date, request_url, ip_address, asn, sha256_hash,
-                                                sha1_hash, md5_hash, file_size, file_name, file_type, av_rate, vt_link)
-                                    syslog_tcp(sock, "%s" % cef_vt, priority=0, facility=7)
+
+                            cef_vt = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|Exploit|VirusTotal ' \
+                                            'Exploit|1| end=%s ' \
+                                            'request=%s src=%s shost=%s cs1=%s cs2=%s cs3=%s fsize=%s fileId=%s ' \
+                                            'fileType=%s cs4=%s requestClientApplication=%s' \
+                                            % (analysis_date, request_url, ip_address, asn, sha256_hash,
+                                            sha1_hash, md5_hash, file_size, file_name, file_type, av_rate, vt_link)
+                            syslog_tcp(sock, "%s" % cef_vt, priority=0, facility=7)
 
         time.sleep(16)
     syslog_tcp_close(sock)

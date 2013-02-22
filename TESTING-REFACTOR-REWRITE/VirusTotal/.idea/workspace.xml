@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Test/C2/bs4_get_c2.py" line="29" mnemonic="3" />
+    <bookmark url="file://$PROJECT_DIR$/Test/C2/bs4_get_c2.py" line="32" mnemonic="3" />
+    <bookmark url="file://$PROJECT_DIR$/virustotal.py" line="147" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d9b085cb-bba9-4584-b271-01c4d942cbf3" name="Default" comment="" />
     <ignored path="VirusTotal.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/syslog_tcp.py" changelist="d9b085cb-bba9-4584-b271-01c4d942cbf3" time="1361459126314" ignored="false" />
-    <file path="/virustotal.py" changelist="d9b085cb-bba9-4584-b271-01c4d942cbf3" time="1361538439355" ignored="false" />
-    <file path="/bs4_get_c2.py" changelist="d9b085cb-bba9-4584-b271-01c4d942cbf3" time="1361538201684" ignored="false" />
+    <file path="/virustotal.py" changelist="d9b085cb-bba9-4584-b271-01c4d942cbf3" time="1361544474393" ignored="false" />
+    <file path="/bs4_get_c2.py" changelist="d9b085cb-bba9-4584-b271-01c4d942cbf3" time="1361544898253" ignored="false" />
     <file path="/ip_prototypes.py" changelist="d9b085cb-bba9-4584-b271-01c4d942cbf3" time="1361538381153" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,7 +31,7 @@
       <file leaf-file-name="virustotal.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/virustotal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="76" column="0" selection-start="2360" selection-end="2360" vertical-scroll-proportion="-0.844519">
+            <state line="106" column="42" selection-start="3594" selection-end="3594" vertical-scroll-proportion="0.05704698">
               <folding>
                 <element signature="e#244#259#0" expanded="true" />
               </folding>
@@ -52,7 +53,7 @@
       <file leaf-file-name="bs4_get_c2.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Test/C2/bs4_get_c2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="0" selection-start="59" selection-end="1385" vertical-scroll-proportion="0.0">
+            <state line="16" column="4" selection-start="323" selection-end="1444" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="e#1#16#0" expanded="true" />
               </folding>
@@ -89,8 +90,8 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/syslog/syslog_tcp.py" />
-        <option value="$PROJECT_DIR$/Test/C2/bs4_get_c2.py" />
         <option value="$PROJECT_DIR$/Test/C2/IP/ip_prototypes.py" />
+        <option value="$PROJECT_DIR$/Test/C2/bs4_get_c2.py" />
         <option value="$PROJECT_DIR$/virustotal.py" />
       </list>
     </option>
@@ -154,47 +155,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="VirusTotal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="VirusTotal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="C2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="VirusTotal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="VirusTotal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="C2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IP" />
+              <option name="myItemId" value="syslog" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -449,13 +410,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/syslog/syslog_tcp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="41" selection-start="55" selection-end="55" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Test/C2/IP/ip_prototypes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="27" selection-start="57" selection-end="57" vertical-scroll-proportion="0.0">
@@ -465,9 +419,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/syslog/syslog_tcp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="41" selection-start="55" selection-end="55" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Test/C2/bs4_get_c2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="59" selection-end="1385" vertical-scroll-proportion="0.0">
+        <state line="16" column="4" selection-start="323" selection-end="1444" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="e#1#16#0" expanded="true" />
           </folding>
@@ -476,7 +437,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/virustotal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="0" selection-start="2360" selection-end="2360" vertical-scroll-proportion="-0.844519">
+        <state line="106" column="42" selection-start="3594" selection-end="3594" vertical-scroll-proportion="0.05704698">
           <folding>
             <element signature="e#244#259#0" expanded="true" />
           </folding>
