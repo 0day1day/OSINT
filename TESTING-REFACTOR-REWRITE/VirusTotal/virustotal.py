@@ -130,8 +130,6 @@ def virusTotalTest(rss_feed):
                             file_type = element_dict['File type'].strip()
                             av_rate = str(data["positives"]).strip() + '%'
                             vt_link = str(data["permalink"].strip())
-                            print(analysis_date, request_url, ip_address, asn, sha256_hash,
-                                  sha1_hash, md5_hash, file_size, file_name, file_type, av_rate, vt_link)
                             for c2_item in cull_c2(str(vt_link)):
                                 if c2_item is not None:
                                     cef_vt_c2_ip = 'CEF:0|VirusTotal + Malc0de|VirusTotal|1.0|C2|VirusTotal C2|1|' \
