@@ -1,7 +1,7 @@
 __date__ = "Nov 15, 2012"
 __author__ = "AlienOne"
 __copyright__ = "GPL"
-__credits__ = ["Justin Jessup", "Adam Reber Contributed - ConvertToBytes function"]
+__credits__ = ["Justin Jessup", "Adam Reber => ConvertToBytes function"]
 __license__ = "GPL"
 __version__ = "1.1.0"
 __maintainer__ = "AlienOne"
