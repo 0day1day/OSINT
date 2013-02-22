@@ -23,7 +23,7 @@ VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus 
 - Two Real Time Rules iterate and fire aginst the "VirusTotal Exploit" & "VirusTotal C2" events populating two Active Lists 
 - Active List #1 => 24 hour aged Active List of Exploit IP/FQD/Hash/Filename attribute information
 - Active List #2 => 90 day aged Active List of C2 IP/FQDN indicators - note method needs to be completed to cull FQDN C2 indicators - strategically C2 indicators are utilized longer by actors
-- Simple use case would be to alert on any system within customer space communicating with observed communication with the culled indicator IP/FQDN's 
+- Simple use case would be to alert on any system within customer space communicating with observed culled indicator IP/FQDN's 
 - More complex correlation use cases can be created against other data types with IP/FQDN indicators - or other global use cases
 - Additionally more complex use case would be to alert if any IP/FQDN has been observed in the past touching the customer infrastructure - Recidivism Use Case 
 
