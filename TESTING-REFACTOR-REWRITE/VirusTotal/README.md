@@ -6,7 +6,7 @@
 
 #####Use Case Description
 The function of this use case is to locate CND threat indicators associated with malware samples collected by Malc0de, that have an Anti Virus detection rate of less than or equal to 15%. Strategically one would infer that indicators culled from malware samples with low AV detection rate have a higher degree of model confidence. 
-VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus vendors with current signatures. Within the scope of this use case we pull indicator attribute information from both malc0de and VirusTotal for inclusion into ArcSight/SIEM based real time alerting use cases. Note we have observed in the past malc0de stumbling upon APT/1 indicators of interest, hence the strategic value of the indicators attribute information culled from the data sources. 
+VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus vendors with current signatures. Within the scope of this use case we pull indicator attribute information from both malc0de and VirusTotal for inclusion into ArcSight/SIEM based real time alerting use cases. Note we have observed in the past malc0de stumbling upon APT/1 indicators of interest, hence the strategic value of the indicator attribute information culled from the data sources. 
 
 #####Collection & Processing Methodology 
 - Cull indicators from malc0de - HTTP GET Request - Python XML parsing 
