@@ -18,6 +18,29 @@ VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus 
 - C2 Exploit events are associated with C2 indicators culled from the Behavioral section of the Virustotal report - VirusTotal detonated malware within a sandbox environment and collects UDP/TCP communications with IP/FQDN C2 assets. 
 - CEF events are sent to an ArcSight CEF Smart Connector running on localhost - via a Python TCP syslog client
 
+#####Culled Attribute to ArcSight Mappings 
+**Python Object - ArcSight Schema Field - Description**
+- analysis_date => EndTime => Date and Time malware sample was analized by VirusTotal
+- request_url => RequestUrl => Malicious RequestUrl String
+- ip_address => SourceAddress => Source IP Address of Malicious RequestUrl at Time www.malc0de.com collected the sample 
+- c2_item => DestinationAddress => Destination IP Address for outbound C2 call back from the maleware as observered by VirusTotal when malware sample was detonated in their sandbox 
+- asn => SourceHostName => Autonomous System Network number - aka the point of precense where the Exploit vector IP Address originated from 
+- sha256_hash => DeviceCustomString1 => hash value from VirusTotal analysis of malware sample
+- sha1_hash => DeviceCustomString2 => hash value from VirusTotal analysis of malware sample 
+- md5_hash => DeviceCustomString3 => hash value from VirusTotal analysis of malware sample 
+- file_size => FileSize => file size in bytes 
+- file_name => FileID => file name of the malware sample 
+- file_type => FileType => file type of malware as determined by VirusTotal Analysis 
+- av_rate => DeviceCustomString4 => AV detection rate from malware iterated against top 45 AV vendors with current AV signatures at VirusTotal 
+- vt_link => RequestClientApplication => VirusTotal Request URL to VirusTotal Report 
+**ArcSight Only CEF Mappings - Assignment - Description if Any**
+- Name => VirusTotal C2 => Only if C2 Attributes 
+- Name => VirusTotal Exploit => Only if Exploit Attributes 
+- DeviceProduct => VirusTotal 
+- DeviceVendor => VirusTotal + Malc0de
+- DeviceEventClassID => C2 => Only if C2 Attributes 
+- DeviceEventClassID => Exploit => Only if Exploit Attributes 
+
 #####ArcSight Content Development 
 - Data types that can be correlated against the VirusTotal data type - include any data types with IP/FQDN data focal points 
 - Two Real Time Rules iterate and fire aginst the "VirusTotal Exploit" & "VirusTotal C2" events populating two Active Lists 
