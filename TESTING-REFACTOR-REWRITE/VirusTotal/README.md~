@@ -29,6 +29,7 @@ VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus 
 - Implementation runs as a daemon process on system
 
 #####TODO
+- regex method to cull C2 FQDN indicators 
 - Include Logging facility 
 - Email alerting if network communications fail 
 
