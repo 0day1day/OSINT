@@ -48,7 +48,7 @@ def cull_c2(requestUrl):
     try:
         c2_tcp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-2]
         c2_udp_connections = soup.find("table", {"id": "behavioural-information"}).find_all("pre")[-1]
-    except AttributeError or IndexError:
+    except (AttributeError, IndexError):
         return
 
     c2_ip_list = []
