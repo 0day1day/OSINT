@@ -20,7 +20,7 @@ VirusTotal iterates over malware samples uploaded against the top 45 Anti Virus 
 
 #####ArcSight Content Development 
 - Data types that can be correlated against the VirusTotal data type - include any data types with IP/FQDN data focal points 
-- Two Real Time Rule iterates and fire aginst the "VirusTotal Exploit" & "VirusTotal C2" events populating two Active Lists 
+- Two Real Time Rules iterates and fire aginst the "VirusTotal Exploit" & "VirusTotal C2" events populating two Active Lists 
 - Active List #1 => 24 hour aged Active List of Exploit IP/FQD/Hash/Filename attribute information
 - Active List #2 => 90 day aged Active List of C2 IP/FQDN indicators - note method needs to be completed to cull FQDN C2 indicators - strategically C2 indicators are utilized longer by actors
 - Simple use case would be to alert on any system within customer space communicating with observed communication with the culled indicator IP/FQDN's 
