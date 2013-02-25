@@ -38,7 +38,7 @@ def tor_routerNodes():
             for values in urlDataDict.values():
                 try:
                     element = values[5].strip('\n')
-                    cef_router_node = 'CEF:0|Tor Router Node|Tor Router|1.0|100|Tor Router Node|1| src=%s' % \
+                    cef_router_node = 'CEF:0|Tor Router Node|Tor Router|1.0|Router Node|Tor Router Node|1| src=%s' % \
                                       element
                     syslog_tcp(sock, "%s" % cef_router_node, priority=0, facility=7)
                 except ValueError:
@@ -61,7 +61,7 @@ def tor_exitNodes():
                 for values in urlDataDict.values():
                     try:
                         element = values[0].strip('\n')
-                        cef_exit_node = 'CEF:0|Tor Exit Node|Tor Exit|1.0|100|Tor Exit Node|1| src=%s' % \
+                        cef_exit_node = 'CEF:0|Tor Exit Node|Tor Exit|1.0|Exit Node|Tor Exit Node|1| src=%s' % \
                                         element
                         syslog_tcp(sock, "%s" % cef_exit_node, priority=0, facility=7)
                     except IndexError:

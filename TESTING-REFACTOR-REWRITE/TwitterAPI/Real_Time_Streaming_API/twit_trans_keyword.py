@@ -91,7 +91,7 @@ def main():
     sock = syslog_tcp_open('127.0.0.1', port=1026)
     for item in twitterStream(follow_ids, keywords):
         #CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension
-        cef = 'CEF:0|Twitter RealTime Stream|Twitter|1.0|100|WatchList|1| end=%s requestClientApplication=%s' \
+        cef = 'CEF:0|Twitter RealTime Stream|Twitter|1.0|Twitter Keyword|WatchList|1| end=%s requestClientApplication=%s' \
               ' suid=%s suser=%s spriv=%s duid=%s duser=%s dpriv=%s msg=%s' % (item['Ctime'], item['Platform'],
               str(item['TwitterID']), item['ScreenName'], item['ProperName'], str(item['ReplyToID']),
               item['ReplyToScreenName'], item['SourceLang'], item['Tweet'])

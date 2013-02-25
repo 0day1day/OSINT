@@ -26,11 +26,12 @@ Harvest actively recorded Tor router and exit nodes. Tor anonymous routing servi
 ####Culled Attribute to ArcSight Mappings
 **Python Object - ArcSight Schema Field - Description**
 element - SourceAddress - None 
+
 **ArcSight CEF Mappings - Assignment - Description if Any**
 SourceAddress - Tor Router/Exit Node - None
 - DeviceProduct => Tor Router Node/Tor Exit Node - None
 - DeviceVendor => Tor Exit Node/Tor Router Node - None
-- DeviceEventClassID => Tor Exit/Tor Router - None
+- DeviceEventClassID => Exit Node/Router Node - None
 
 ####ArcSight Content Development
 - Create Real Time Rule to populate Active List 
@@ -38,6 +39,7 @@ SourceAddress - Tor Router/Exit Node - None
 - String assignment should be DeviceEventClassID
 - Create Real Time Rule to monitor outbound communications of customer assets with Tor Router Nodes 
 - Create Real Time Rule to monitor inbound communications of customer assets SourceAddress
+
 ####Long Term Deployment 
 - Implementation runs as a daemon process on system
 

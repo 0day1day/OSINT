@@ -1,0 +1,5 @@
+TwitterMon
+tweetstream==1.1.1
+requests==1.1.0
+python-daemon==1.6
+daemon==1.0
