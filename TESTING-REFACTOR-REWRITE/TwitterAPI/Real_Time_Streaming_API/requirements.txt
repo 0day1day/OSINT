@@ -1,5 +1,8 @@
 TwitterMon
+IPy==0.75
+adns-python==1.2.1
 tweetstream==1.1.1
 requests==1.1.0
 python-daemon==1.6
 daemon==1.0
+cymru-services==1.3
