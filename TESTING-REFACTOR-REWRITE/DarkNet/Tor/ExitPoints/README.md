@@ -15,7 +15,7 @@
 - pip install -r requirements.txt
 - python tor_get_current_router_nodes.py
 - ps -ef | grep tor_get_current_router_nodes.py # You should observe the script running as a daemon process
-- Script is configured to run every 24 hours
+- Script is configured to run every 24hrs
 
 ####Use Case Description
 Harvest actively recorded Tor router and exit nodes. Tor anonymous routing services are often utilized by nefarious actors to conduct hacking operations against customers information systems infrastructure. Strategy is to daily update Active Lists within ArcSight SIEM in an effort to monitor and alert on any customer assets that may communicate with any known Tor router nodes. Additionally monitor and alert on any Tor Exit nodes that may communicate with the customer's information systems infrastructure.
