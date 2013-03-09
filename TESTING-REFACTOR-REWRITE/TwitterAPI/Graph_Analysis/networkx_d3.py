@@ -1,6 +1,4 @@
 import tweetstream
-from json import dumps
-from collections import OrderedDict
 from pymongo import MongoClient
 
 
@@ -15,7 +13,7 @@ def write_mongo(element):
 
 def twitterStream():
     """Watch Twitter RealTime Stream for WatchList Elements"""
-    words = ["AnonymousIRC", "hackers", "NullCrew", "FBI"]
+    words = ["AnonymousIRC", "hackers", "NullCrew", "firefox"]
     with tweetstream.FilterStream("JollyJimBob", "ninja789", track=words,) as stream:
         try:
             for tweet in stream:
@@ -30,35 +28,29 @@ def twitterStream():
                             for record in mentions:
                                 user_id = record['id_str']
                                 user_name = record['screen_name']
-                                user_mentions = "mentions"
+                                user_mentions = "no_mentions"
                                 keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention', 'UserId', 'UserName']
                                 values = [created_at, id_string, screen_name, tweet_text, user_mentions, user_id, user_name]
                                 mentions_dict = dict(zip(keys, values))
-                                ordered_mentions_dict = OrderedDict(sorted(mentions_dict.items(), key=lambda by_key: by_key[0]))
-                                yield ordered_mentions_dict
+                                yield write_mongo(mentions_dict)
                         else:
                             no_mentions = "no_mentions"
-                            keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention']
+                            keys = ['Data', 'ID', 'Name', 'Tweet', 'Mention']
                             values = [created_at, id_string, screen_name, tweet_text, no_mentions]
                             no_mentions_dict = dict(zip(keys, values))
-                            ordered_no_mentions_dict = OrderedDict(sorted(no_mentions_dict.items(), key=lambda by_key: by_key[0]))
-                            yield ordered_no_mentions_dict
+                            print no_mentions_dict
+                            yield write_mongo(no_mentions_dict)
                     except KeyError:
                         raise KeyError
         except OSError:
             pass
 
 
-def encode_json():
-    for tweet_dict in twitterStream():
-        if tweet_dict:
-            yield dumps(tweet_dict)
-
-
 def main():
-    for tweet in encode_json():
-        print tweet
-        
+    for item in twitterStream():
+        if item:
+            return item
+
 
 if __name__ == '__main__':
     main()
