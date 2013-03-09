@@ -31,7 +31,7 @@ def twitterStream():
                                 user_id = record['id_str']
                                 user_name = record['screen_name']
                                 user_mentions = "mentions"
-                                keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention', 'UserId', 'UserName']
+                                keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention', 'mUserId', 'mUserName']
                                 values = [created_at, id_string, screen_name, tweet_text, user_mentions, user_id, user_name]
                                 mentions_dict = dict(zip(keys, values))
                                 ordered_mentions_dict = OrderedDict(sorted(mentions_dict.items(), key=lambda by_key: by_key[0]))
@@ -58,7 +58,7 @@ def encode_json():
 def main():
     for tweet in encode_json():
         print tweet
-        
+
 
 if __name__ == '__main__':
     main()
