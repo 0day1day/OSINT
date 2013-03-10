@@ -26,14 +26,16 @@ def twitterStream():
                                 keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention', 'mUserId', 'mUserName']
                                 values = [created_at, id_string, screen_name, tweet_text, user_mentions, user_id, user_name]
                                 mentions_dict = dict(zip(keys, values))
-                                ordered_mentions_dict = OrderedDict(sorted(mentions_dict.items(), key=lambda by_key: by_key[0]))
+                                ordered_mentions_dict = OrderedDict(sorted(mentions_dict.items(),
+                                                                           key=lambda by_key: by_key[0]))
                                 yield ordered_mentions_dict
                         else:
                             no_mentions = "no_mentions"
                             keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention']
                             values = [created_at, id_string, screen_name, tweet_text, no_mentions]
                             no_mentions_dict = dict(zip(keys, values))
-                            ordered_no_mentions_dict = OrderedDict(sorted(no_mentions_dict.items(), key=lambda by_key: by_key[0]))
+                            ordered_no_mentions_dict = OrderedDict(sorted(no_mentions_dict.items(),
+                                                                          key=lambda by_key: by_key[0]))
                             yield ordered_no_mentions_dict
                     except KeyError:
                         raise KeyError

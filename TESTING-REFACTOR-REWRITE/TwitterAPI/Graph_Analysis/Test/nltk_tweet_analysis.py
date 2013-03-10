@@ -1,4 +1,6 @@
 import re
+from collections import Counter
+from collections import OrderedDict
 from nltk import FreqDist
 from nltk.corpus import stopwords
 from nltk.corpus import wordnet
@@ -58,6 +60,11 @@ def main():
     pickle_words(file_name, pickle_file)
     words = load(open("tweets.pickle"))
     freq_dist = FreqDist(words)
+    counter_dict = dict(Counter(words))
+    ordered_counter_dict = OrderedDict(sorted(counter_dict.items(), key=lambda by_key: by_key[1]))
+    for key, value in ordered_counter_dict.items():
+        if value > 2500:
+            print (key, value)
     print("===")
     print("Conducting Frequency and Lexical Diversity Analysis of Twitter Search Space: ")
     print("===")
