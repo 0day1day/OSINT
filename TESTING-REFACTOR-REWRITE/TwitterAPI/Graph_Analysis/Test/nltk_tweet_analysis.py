@@ -28,31 +28,42 @@ def flatten_lists(list_of_lists):
             yield element
 
 
-file_name = "tweets_output.txt"
-tweet_lists = []
-for item in iterate_words(file_name):
-    for element in flatten_lists(item):
-        tweet_lists.append(element)
-f = open("tweets.pickle", "wb")
-dump(tweet_lists, f)
-f.close()
-words = load(open("tweets.pickle"))
-freq_dist = FreqDist(words)
-print("===")
-print("Conducting Frequency and Lexical Diversity Analysis of Twitter Search Space: ")
-print("===")
-print("Number of words within the twitter search space: ")
-print(len(words))
-print("Number of unique words within twitter search space: ")
-print(len(set(words)))
-print("Lexical Diversity of unique words within twitter search space: ")
-print(1.0 * len(set(words)) / len(words))
-print("===")
-print("Conducting Native Language Processing Analysis Utilizing Python NLTK")
-print("===")
-print("Top 25 Frequent Words within the Twitter Search Space: ")
-print(freq_dist.keys()[:25])
-print("===")
-print("Bottom 25 Frequent Words within the Twitter Search Space: ")
-print(freq_dist.keys()[-25:])
-print("===")
+def pickle_words(file_name, pickle_file):
+    """Pickle filtered Tweets"""
+    tweet_lists = []
+    for item in iterate_words(file_name):
+        for element in flatten_lists(item):
+            tweet_lists.append(element)
+    file_handle = open(pickle_file, "wb")
+    dump(tweet_lists, file_handle)
+    file_handle.close()
+
+
+def main ():
+    file_name = "tweets_output.txt"
+    pickle_file = "tweets.pickle"
+    pickle_words(file_name, pickle_file)
+    words = load(open("tweets.pickle"))
+    freq_dist = FreqDist(words)
+    print("===")
+    print("Conducting Frequency and Lexical Diversity Analysis of Twitter Search Space: ")
+    print("===")
+    print("Number of words within the twitter search space: ")
+    print(len(words))
+    print("Number of unique words within twitter search space: ")
+    print(len(set(words)))
+    print("Lexical Diversity of unique words within twitter search space: ")
+    print(1.0 * len(set(words)) / len(words))
+    print("===")
+    print("Conducting Native Language Processing Analysis Utilizing Python NLTK")
+    print("===")
+    print("Top 25 Frequent Words within the Twitter Search Space: ")
+    print(freq_dist.keys()[:25])
+    print("===")
+    print("Bottom 25 Frequent Words within the Twitter Search Space: ")
+    print(freq_dist.keys()[-25:])
+    print("===")
+
+
+if __name__ == '__main__':
+    main()
