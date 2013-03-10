@@ -23,8 +23,11 @@ def iterate_words(file_name):
         for items in words_no_punctuation:
             if len(items) >= 3:
                 if english_word(items):
-                    filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
-                    yield filtered_words
+                    if "http" in items:
+                        pass
+                    else:
+                        filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
+                        yield filtered_words
 
 
 def flatten_lists(list_of_lists):
