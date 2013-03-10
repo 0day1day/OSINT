@@ -6,7 +6,7 @@ from pymongo import MongoClient
 
 def twitterStream():
     """Watch Twitter RealTime Stream for WatchList Elements"""
-    words = ["AnonymousIRC", "hackers", "NullCrew", "FBI"]
+    words = ["hackers", "FBI"]
     with tweetstream.FilterStream("JollyJimBob", "ninja789", track=words,) as stream:
         for tweet in stream:
             if 'user' in tweet:
