@@ -4,15 +4,6 @@ from collections import OrderedDict
 from pymongo import MongoClient
 
 
-def write_mongo(element):
-    connection = MongoClient('localhost', 27017)
-    db = connection["twitter"]
-    tweet_hits = db["tweets"]
-    tweet_hits.insert(element)
-    for tweets in db.tweet_hits.find():
-        print tweets
-
-
 def twitterStream():
     """Watch Twitter RealTime Stream for WatchList Elements"""
     words = ["AnonymousIRC", "hackers", "NullCrew", "FBI"]
@@ -47,6 +38,15 @@ def twitterStream():
                         raise KeyError
         except OSError:
             pass
+
+
+def write_mongo(element):
+    connection = MongoClient('localhost', 27017)
+    db = connection["twitter"]
+    tweet_hits = db["tweets"]
+    tweet_hits.insert(element)
+    for tweets in db.tweet_hits.find():
+        print tweets
 
 
 def encode_json():
