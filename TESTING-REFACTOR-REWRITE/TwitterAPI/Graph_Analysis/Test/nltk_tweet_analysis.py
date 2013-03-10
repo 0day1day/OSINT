@@ -13,12 +13,13 @@ def english_word(word_to_test):
     else:
         pass
 
+
 def iterate_words(file_name):
     """Iterate over Tweet words and filter out common words in multiple languages"""
     f = open(file_name, 'r')
     filter_stop_words = set(stopwords.words())
     for words in f:
-        words_no_punctuation = re.findall(r'\w+', words.lower(),flags=re.UNICODE | re.LOCALE)
+        words_no_punctuation = re.findall(r'\w+', words.lower(), flags=re.UNICODE | re.LOCALE)
         for items in words_no_punctuation:
             if len(items) >= 3:
                 if english_word(items):
@@ -48,7 +49,7 @@ def pickle_words(file_name, pickle_file):
     file_handle.close()
 
 
-def main ():
+def main():
     file_name = "tweets_output.txt"
     pickle_file = "tweets.pickle"
     pickle_words(file_name, pickle_file)
