@@ -1,9 +1,17 @@
 import re
 from nltk import FreqDist
 from nltk.corpus import stopwords
+from nltk.corpus import wordnet
 from cPickle import dump
 from cPickle import load
 
+
+def english_word(word_to_test):
+    """NLTK test to determine if word is English"""
+    if wordnet.synsets(word_to_test):
+        return word_to_test
+    else:
+        pass
 
 def iterate_words(file_name):
     """Iterate over Tweet words and filter out common words in multiple languages"""
@@ -13,8 +21,9 @@ def iterate_words(file_name):
         words_no_punctuation = re.findall(r'\w+', words.lower(),flags=re.UNICODE | re.LOCALE)
         for items in words_no_punctuation:
             if len(items) >= 3:
-                filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
-                yield filtered_words
+                if english_word(items):
+                    filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
+                    yield filtered_words
 
 
 def flatten_lists(list_of_lists):
@@ -63,7 +72,6 @@ def main ():
     print("Bottom 25 Frequent Words within the Twitter Search Space: ")
     print(freq_dist.keys()[-25:])
     print("===")
-
 
 if __name__ == '__main__':
     main()

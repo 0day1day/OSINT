@@ -2,13 +2,12 @@ import tweetstream
 from json import dumps
 from json import loads
 from collections import OrderedDict
-from collections import Counter
 from pymongo import MongoClient
 
 
 def twitterStream():
     """Watch Twitter RealTime Stream for WatchList Elements"""
-    words = ["Iran", "Syria", "North Korea"]
+    words = ["Iran", "Syria", "North Korea", "Russia", "China", "Israel"]
     with tweetstream.FilterStream("JollyJimBob", "delta0!23123", track=words,) as stream:
         for tweet in stream:
             if 'user' in tweet:
@@ -56,6 +55,7 @@ def write_mongo(element):
 
 
 def record_tweets(file_name, tweet):
+    """Write Tweets to a text file"""
     f = open(file_name, 'a')
     decoded_tweet = loads(tweet)
     tweet_text = decoded_tweet['Tweet'].encode('ascii', 'ignore')
@@ -64,12 +64,14 @@ def record_tweets(file_name, tweet):
 
 
 def iterate_words(file_name):
+    """Iterate words from a file"""
     f = open(file_name, 'r')
     for words in f:
         yield words
 
 
 def flatten_lists(list_of_lists):
+    """Flatten a list of lists into a single list"""
     iteration = iter(list_of_lists)
     for element in iteration:
         if isinstance(element, (list, tuple)):
