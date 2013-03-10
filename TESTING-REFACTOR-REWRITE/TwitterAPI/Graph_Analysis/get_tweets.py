@@ -1,6 +1,8 @@
 import tweetstream
 from json import dumps
+from json import loads
 from collections import OrderedDict
+from collections import Counter
 from pymongo import MongoClient
 
 
@@ -52,9 +54,24 @@ def write_mongo(element):
     yield tweet_hits.insert(element)
 
 
+def record_tweets(file_name, tweet):
+    f = open(file_name, 'a')
+    decoded_tweet = loads(tweet)
+    tweet_text = decoded_tweet['Tweet'].encode('ascii', 'ignore')
+    f.write(tweet_text + '\n')
+    f.close()
+
+
+def word_freq(file_name):
+    with open(file_name, 'r') as f:
+        get_items = f.readlines().split(' ')
+
+
 def main():
+    file_name = "tweets_output.txt"
     for tweet in encode_json():
-        print tweet
+        record_tweets(file_name, tweet)
+
 
 
 if __name__ == '__main__':
