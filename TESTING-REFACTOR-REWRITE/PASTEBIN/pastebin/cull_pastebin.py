@@ -89,7 +89,7 @@ def grab_phone(filter_name, files = []):
             suffix = filter_name
             if file.endswith(suffix) != True:
                 for line in open(file,'r'):
-                    #(\d{3})\D*(\d{3})\D*(\d{4})\D*(\d*)$
+                    #(\d{3})\D*(\d{3})\D*(\d{4})\D*(\d*)$')
                     phonesrch = re.compile(r'([\(]?\d{3}\D*\d{3}\D*\d{4}\D*\d*)$')
                     found.extend(phonesrch.findall(line)) 
     u = {}

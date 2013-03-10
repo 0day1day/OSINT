@@ -8,7 +8,7 @@ from pymongo import MongoClient
 
 def twitterStream():
     """Watch Twitter RealTime Stream for WatchList Elements"""
-    words = ["hackers", "FBI"]
+    words = ["Iran", "Syria", "North Korea"]
     with tweetstream.FilterStream("JollyJimBob", "delta0!23123", track=words,) as stream:
         for tweet in stream:
             if 'user' in tweet:
@@ -39,6 +39,7 @@ def twitterStream():
                     raise KeyError
 
 
+
 def encode_json():
     """Encode Python dictionary object to JSON object"""
     for tweet_dict in twitterStream():
@@ -62,16 +63,26 @@ def record_tweets(file_name, tweet):
     f.close()
 
 
-def word_freq(file_name):
-    with open(file_name, 'r') as f:
-        get_items = f.readlines().split(' ')
+def iterate_words(file_name):
+    f = open(file_name, 'r')
+    for words in f:
+        yield words
+
+
+def flatten_lists(list_of_lists):
+    iteration = iter(list_of_lists)
+    for element in iteration:
+        if isinstance(element, (list, tuple)):
+            for item in flatten_lists(element):
+                yield item
+        else:
+            yield element
 
 
 def main():
     file_name = "tweets_output.txt"
     for tweet in encode_json():
         record_tweets(file_name, tweet)
-
 
 
 if __name__ == '__main__':
