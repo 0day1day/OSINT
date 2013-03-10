@@ -7,7 +7,7 @@ from pymongo import MongoClient
 def twitterStream():
     """Watch Twitter RealTime Stream for WatchList Elements"""
     words = ["hackers", "FBI"]
-    with tweetstream.FilterStream("JollyJimBob", "ninja789", track=words,) as stream:
+    with tweetstream.FilterStream("JollyJimBob", "delta0!23123", track=words,) as stream:
         for tweet in stream:
             if 'user' in tweet:
                 created_at = tweet['created_at']
@@ -50,7 +50,6 @@ def write_mongo(element):
     db = connection["twitter"]
     tweet_hits = db["tweets"]
     yield tweet_hits.insert(element)
-
 
 
 def main():
