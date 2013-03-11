@@ -6,6 +6,7 @@ import requests
 from itertools import chain
 from collections import OrderedDict
 from nltk.corpus import stopwords
+from tweetstream import ConnectionError
 
 
 def get_following_ids(twitter_user_name):
@@ -27,35 +28,38 @@ def twitterStream(user_name):
     """Watch Twitter RealTime Stream for WatchList Elements"""
     follow_ids = list_following(user_name)
     with tweetstream.FilterStream("JollyJimBob", "delta0!23123", follow=follow_ids,) as stream:
-        for tweet in stream:
-            if 'user' in tweet:
-                created_at = tweet['created_at']
-                mentions = tweet['entities']['user_mentions']
-                id_string = tweet['user']['id_str']
-                screen_name = tweet['user']['screen_name']
-                tweet_text = tweet['text']
-                try:
-                    if len(mentions) > 0:
-                        for record in mentions:
-                            user_id = record['id_str']
-                            user_name = record['screen_name']
-                            user_mentions = "mentions"
-                            keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention', 'mUserId', 'mUserName']
-                            values = [created_at, id_string, screen_name, tweet_text, user_mentions, user_id, user_name]
-                            mentions_dict = dict(zip(keys, values))
-                            ordered_mentions_dict = OrderedDict(sorted(mentions_dict.items(),
-                                                                       key=lambda by_key: by_key[0]))
-                            yield ordered_mentions_dict
-                    else:
-                        no_mentions = "no_mentions"
-                        keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention']
-                        values = [created_at, id_string, screen_name, tweet_text, no_mentions]
-                        no_mentions_dict = dict(zip(keys, values))
-                        ordered_no_mentions_dict = OrderedDict(sorted(no_mentions_dict.items(),
-                                                                      key=lambda by_key: by_key[0]))
-                        yield ordered_no_mentions_dict
-                except KeyError:
-                    raise KeyError
+        try:
+            for tweet in stream:
+                if 'user' in tweet:
+                    created_at = tweet['created_at']
+                    mentions = tweet['entities']['user_mentions']
+                    id_string = tweet['user']['id_str']
+                    screen_name = tweet['user']['screen_name']
+                    tweet_text = tweet['text']
+                    try:
+                        if len(mentions) > 0:
+                            for record in mentions:
+                                user_id = record['id_str']
+                                user_name = record['screen_name']
+                                user_mentions = "mentions"
+                                keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention', 'mUserId', 'mUserName']
+                                values = [created_at, id_string, screen_name, tweet_text, user_mentions, user_id, user_name]
+                                mentions_dict = dict(zip(keys, values))
+                                ordered_mentions_dict = OrderedDict(sorted(mentions_dict.items(),
+                                                                           key=lambda by_key: by_key[0]))
+                                yield ordered_mentions_dict
+                        else:
+                            no_mentions = "no_mentions"
+                            keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention']
+                            values = [created_at, id_string, screen_name, tweet_text, no_mentions]
+                            no_mentions_dict = dict(zip(keys, values))
+                            ordered_no_mentions_dict = OrderedDict(sorted(no_mentions_dict.items(),
+                                                                          key=lambda by_key: by_key[0]))
+                            yield ordered_no_mentions_dict
+                    except KeyError:
+                        raise KeyError
+        except ConnectionError:
+            pass
 
 
 def follow_twitter_pods(user_name):
