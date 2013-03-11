@@ -1,6 +1,7 @@
 
 
 import requests
+from itertools import chain
 
 
 def get_following_ids(twitter_user_name):
@@ -12,10 +13,16 @@ def get_following_ids(twitter_user_name):
         yield items
 
 
-def main():
-    for ids in get_following_ids("AnonymousIRC"):
-        print ids
+def list_following(user_name):
+    twitter_following_id = []
+    for twitter_ids in get_following_ids(user_name):
+        twitter_following_id.append(twitter_ids)
+    return twitter_following_id
 
+
+def main():
+    user_name = "AnonymousIRC"
+    print list_following(user_name)
 
 if __name__ == '__main__':
     main()

@@ -2,14 +2,31 @@
 
 import tweetstream
 import re
+import requests
 from itertools import chain
 from collections import OrderedDict
 from nltk.corpus import stopwords
 
 
-def twitterStream():
+def get_following_ids(twitter_user_name):
+    requestUrl = "https://api.twitter.com/1/friends/ids.json?cursor=-1&screen_name=" + twitter_user_name
+    r1 = requests.get(requestUrl)
+    print requestUrl
+    data = r1.json()
+    for items in data['ids']:
+        yield items
+
+
+def list_following(user_name):
+    twitter_following_id = []
+    for twitter_ids in get_following_ids(user_name):
+        twitter_following_id.append(twitter_ids)
+    return twitter_following_id
+
+
+def twitterStream(user_name):
     """Watch Twitter RealTime Stream for WatchList Elements"""
-    follow_ids = [365235743, 739250522, 358381825, 336683669, 16589206]
+    follow_ids = list_following(user_name)
     with tweetstream.FilterStream("JollyJimBob", "delta0!23123", follow=follow_ids,) as stream:
         for tweet in stream:
             if 'user' in tweet:
@@ -42,8 +59,8 @@ def twitterStream():
                     raise KeyError
 
 
-def main():
-    for tweet in twitterStream():
+def follow_twitter_pods(user_name):
+    for tweet in twitterStream(user_name):
         try:
             if len(tweet['mUserName']) != 0:
                 tweet_list = []
@@ -57,6 +74,10 @@ def main():
         except KeyError:
             continue
 
+
+def main():
+    user_name = "AnonymousIRC"
+    follow_twitter_pods(user_name)
 
 if __name__ == '__main__':
     main()
