@@ -42,7 +42,7 @@ def twitterStream():
                     except KeyError:
                         raise KeyError
         except ConnectionError:
-            pass
+            raise ConnectionError
 
 
 def encode_json():

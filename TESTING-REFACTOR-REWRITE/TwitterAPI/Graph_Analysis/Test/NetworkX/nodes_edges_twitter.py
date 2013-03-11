@@ -59,7 +59,7 @@ def twitterStream(user_name):
                     except KeyError:
                         raise KeyError
         except ConnectionError:
-            pass
+            raise ConnectionError
 
 
 def follow_twitter_pods(user_name):
@@ -73,7 +73,16 @@ def follow_twitter_pods(user_name):
                     filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
                     tweet_list.append(filtered_words)
                 flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
-                print (tweet['Name'], tweet['mUserName'], flat_tweet_list)
+                print (tweet['Name'], tweet['mUserName'], flat_tweet_list, tweet['Mentions'])
+            else:
+                tweet_list = []
+                filter_stop_words = set(stopwords.words('english'))
+                words_no_punctuation = re.findall(r'\w+', tweet['Tweet'].lower(), flags=re.UNICODE | re.LOCALE)
+                for items in words_no_punctuation:
+                    filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
+                    tweet_list.append(filtered_words)
+                flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
+                print(tweet['Name'], tweet['UserName'], flat_tweet_list, tweet['Mentions'])
         except KeyError:
             continue
 
