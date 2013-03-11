@@ -9,9 +9,8 @@ from nltk.corpus import stopwords
 
 def twitterStream():
     """Watch Twitter RealTime Stream for WatchList Elements"""
-    words = ["Top Secret", "Secret Service", "Classified", "Targeted", "Assassination",
-             "Kill Program", "NSA", "wire", "CIA", "FBI", "DEA", "DOJ"]
-    with tweetstream.FilterStream("JollyJimBob", "delta0!23123", track=words,) as stream:
+    follow_ids = [365235743, 739250522, 358381825, 336683669, 16589206]
+    with tweetstream.FilterStream("JollyJimBob", "delta0!23123", follow=follow_ids,) as stream:
         for tweet in stream:
             if 'user' in tweet:
                 created_at = tweet['created_at']
