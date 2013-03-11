@@ -17,16 +17,18 @@ def english_word(word_to_test):
     else:
         pass
 
+
 def iterate_tweets(file_name):
     f = open(file_name, 'r')
     for tweets in f:
         tweets_no_punctuation = re.findall(r'\w+', tweets, flags=re.UNICODE | re.LOCALE)
         yield tweets_no_punctuation
 
+
 def iterate_words(file_name, keyword_list):
     """Iterate over Tweet words and filter out common words in multiple languages"""
     f = open(file_name, 'r')
-    filter_stop_words = set(stopwords.words())
+    filter_stop_words = set(stopwords.words('english'))
     for words in f:
         words_no_punctuation = re.findall(r'\w+', words.lower(), flags=re.UNICODE | re.LOCALE)
         for items in words_no_punctuation:
@@ -35,7 +37,7 @@ def iterate_words(file_name, keyword_list):
                     for filter_word in keyword_list:
                         if not filter_word.lower() in items:
                             filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
-                            yield items.split()
+                            yield filtered_words
                         else:
                             pass
 
@@ -76,13 +78,16 @@ def lexical_diversity(*args):
     diversity_score = word_count / vocab_size
     return diversity_score
 
+
 def modal_analysis(keyword_list, modals_list):
     cfd = ConditionalFreqDist(keyword_list, modals_list)
     return cfd.tabulate(conditions=keyword_list, samples=modals_list)
 
+
 def main():
     keyword_list = ["Top Secret", "Secret Service", "Classified", "Targeted", "Assassination",
-    "Kill Program", "NSA", "wire", "CIA", "FBI", "DEA", "DOJ"]
+                    "Kill Program", "NSA", "wire", "CIA", "FBI", "DEA", "DOJ", "hackers",
+                    "hacker", "exploit code", "Defense", "Intelligence", "Agency"]
     file_name = "tweets_output.txt"
     pickle_words_file = "words.pickle"
     pickle_words(file_name, pickle_words_file, keyword_list)
@@ -91,6 +96,7 @@ def main():
     words = load(open("words.pickle"))
     tweets = load(open("tweets.pickle"))
     freq_dist = FreqDist(words)
+    print tweets
     print("===")
     print("Conducting Frequency and Lexical Diversity Analysis of Twitter Search Space: ")
     print("===")
