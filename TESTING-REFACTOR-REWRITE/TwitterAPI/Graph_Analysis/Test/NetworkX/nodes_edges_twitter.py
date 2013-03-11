@@ -43,7 +43,6 @@ def twitterStream():
 
 
 def main():
-    file_name = "tweets_dict_output.txt"
     for tweet in twitterStream():
         try:
             if len(tweet['mUserName']) != 0:
