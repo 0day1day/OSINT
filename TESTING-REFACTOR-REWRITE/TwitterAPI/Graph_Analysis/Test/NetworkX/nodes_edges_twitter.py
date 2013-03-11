@@ -58,8 +58,6 @@ def main():
                 print (tweet['Name'], tweet['mUserName'], flat_tweet_list)
         except KeyError:
             continue
-    # for tweet in encode_json():
-    #     record_tweets(file_name, tweet)
 
 
 if __name__ == '__main__':
