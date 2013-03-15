@@ -5,10 +5,19 @@ import re
 import requests
 import json
 import simplejson
+from pymongo import MongoClient
 from itertools import chain
 from collections import OrderedDict
 from nltk.corpus import stopwords
 from tweetstream import ConnectionError
+
+
+def write_mongo(db_name, element):
+    """Write JSON object to MongoDB"""
+    connection = MongoClient('localhost', 27017)
+    db = connection[db_name]
+    tweet_hits = db[element]
+    yield tweet_hits.insert(element)
 
 
 class OrderedJsonEncoder( simplejson.JSONEncoder ):
@@ -115,8 +124,10 @@ def follow_twitter_pods(user_name):
 
 def main():
     user_name = "AnonymousIRC"
+    db_name = "twitter_two_test"
     for tweet in follow_twitter_pods(user_name):
-        print type(tweet)
+        write_mongo(db_name, tweet)
+        print tweet
 
 if __name__ == '__main__':
     main()
