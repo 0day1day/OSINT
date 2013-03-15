@@ -5,6 +5,7 @@ import re
 import requests
 import json
 import simplejson
+import sys
 from pymongo import MongoClient
 from itertools import chain
 from collections import OrderedDict
@@ -14,10 +15,14 @@ from tweetstream import ConnectionError
 
 def write_mongo(db_name, element):
     """Write JSON object to MongoDB"""
-    connection = MongoClient('localhost', 27017)
-    db = connection[db_name]
-    tweet_hits = db[element]
-    yield tweet_hits.insert(element)
+    try:
+        c = MongoClient(host="localhost", port=27017)
+    except ConnectionError, e:
+        sys.stderr.write("Could not connect to MongoDB: %s" % e)
+        sys.exit(1)
+    dbh = c[db_name]
+    assert dbh.connection == c
+    return dbh.tweets.insert(json.loads(element), safe=True)
 
 
 class OrderedJsonEncoder( simplejson.JSONEncoder ):
@@ -123,8 +128,8 @@ def follow_twitter_pods(user_name):
 
 
 def main():
+    db_name = "twitter"
     user_name = "AnonymousIRC"
-    db_name = "twitter_two_test"
     for tweet in follow_twitter_pods(user_name):
         write_mongo(db_name, tweet)
         print tweet
