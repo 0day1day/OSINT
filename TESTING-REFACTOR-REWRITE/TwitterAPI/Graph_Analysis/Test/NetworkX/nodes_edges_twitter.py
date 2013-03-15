@@ -6,6 +6,7 @@ import requests
 import json
 import simplejson
 import sys
+from daemon import DaemonContext
 from pymongo import MongoClient
 from itertools import chain
 from collections import OrderedDict
@@ -135,4 +136,5 @@ def main():
         print tweet
 
 if __name__ == '__main__':
+    #with DaemonContext():
     main()
