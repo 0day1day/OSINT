@@ -11,6 +11,7 @@ from tweetstream import ConnectionError
 
 
 def get_following_ids(twitter_user_name):
+    """GET Twitter Id's of Following"""
     requestUrl = "https://api.twitter.com/1/friends/ids.json?cursor=-1&screen_name=" + twitter_user_name
     r1 = requests.get(requestUrl)
     if '200' in str(r1.status_code) and 'json' in (r1.headers['content-type']):
@@ -20,6 +21,7 @@ def get_following_ids(twitter_user_name):
 
 
 def list_following(user_name):
+    """Input Twitter ID's into a flat list data structure"""
     twitter_following_id = []
     for twitter_ids in get_following_ids(user_name):
         twitter_following_id.append(twitter_ids)
@@ -65,6 +67,7 @@ def twitterStream(user_name):
 
 
 def follow_twitter_pods(user_name):
+    """Generate Filtered Tweet - Add to Ordered Dict - For NL Analysis"""
     for tweet in twitterStream(user_name):
         print tweet
         try:
