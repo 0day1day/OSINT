@@ -4,10 +4,25 @@ import tweetstream
 import re
 import requests
 import json
+import simplejson
 from itertools import chain
 from collections import OrderedDict
 from nltk.corpus import stopwords
 from tweetstream import ConnectionError
+
+
+class OrderedJsonEncoder( simplejson.JSONEncoder ):
+    """Encode ordered dict objects into JSON for write to mongodb"""
+    def encode(self, o):
+        if isinstance(o, OrderedDict):
+            return "{" + ", ".join([self.encode(k) + ": " + self.encode(v) for (k, v) in o.iteritems()]) + "}"
+        else:
+            return simplejson.JSONEncoder.encode(self, o)
+
+
+def encode_json(ordered_dict):
+    e = OrderedJsonEncoder()
+    return e.encode(ordered_dict)
 
 
 def get_following_ids(twitter_user_name):
@@ -69,7 +84,6 @@ def twitterStream(user_name):
 def follow_twitter_pods(user_name):
     """Generate Filtered Tweet - Add to Ordered Dict - For NL Analysis"""
     for tweet in twitterStream(user_name):
-        print tweet
         try:
             if tweet['mUserName']:
                 tweet_list = []
@@ -81,7 +95,8 @@ def follow_twitter_pods(user_name):
                 flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
                 nlp_entry = {'NLPTweet': flat_tweet_list}
                 tweet.update(nlp_entry)
-                yield tweet
+                ordered_tweet = OrderedDict(tweet)
+                yield encode_json(ordered_tweet)
             else:
                 tweet_list = []
                 filter_stop_words = set(stopwords.words('english'))
@@ -92,7 +107,8 @@ def follow_twitter_pods(user_name):
                 flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
                 nlp_entry = {'NLPTweet': flat_tweet_list}
                 tweet.update(nlp_entry)
-                yield tweet
+                ordered_tweet = OrderedDict(tweet)
+                yield encode_json(ordered_tweet)
         except KeyError:
             continue
 
@@ -100,7 +116,7 @@ def follow_twitter_pods(user_name):
 def main():
     user_name = "AnonymousIRC"
     for tweet in follow_twitter_pods(user_name):
-        print tweet
+        print type(tweet)
 
 if __name__ == '__main__':
     main()
