@@ -66,6 +66,7 @@ def twitterStream(user_name):
 
 def follow_twitter_pods(user_name):
     for tweet in twitterStream(user_name):
+        print tweet
         try:
             if tweet['mUserName']:
                 tweet_list = []
@@ -75,7 +76,9 @@ def follow_twitter_pods(user_name):
                     filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
                     tweet_list.append(filtered_words)
                 flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
-                print (tweet['Name'], tweet['mUserName'], flat_tweet_list, tweet['Mention'])
+                nlp_entry = {'NLPTweet': flat_tweet_list}
+                tweet.update(nlp_entry)
+                yield tweet
             else:
                 tweet_list = []
                 filter_stop_words = set(stopwords.words('english'))
@@ -84,14 +87,17 @@ def follow_twitter_pods(user_name):
                     filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
                     tweet_list.append(filtered_words)
                 flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
-                print(tweet['Name'], tweet['UserName'], flat_tweet_list, tweet['Mention'])
+                nlp_entry = {'NLPTweet': flat_tweet_list}
+                tweet.update(nlp_entry)
+                yield tweet
         except KeyError:
             continue
 
 
 def main():
     user_name = "AnonymousIRC"
-    follow_twitter_pods(user_name)
+    for tweet in follow_twitter_pods(user_name):
+        print tweet
 
 if __name__ == '__main__':
     main()
