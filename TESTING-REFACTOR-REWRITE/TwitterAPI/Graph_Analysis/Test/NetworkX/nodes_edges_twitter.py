@@ -67,7 +67,7 @@ def twitterStream(user_name):
 def follow_twitter_pods(user_name):
     for tweet in twitterStream(user_name):
         try:
-            if len(tweet['mUserName']) != 0:
+            if tweet['mUserName']:
                 tweet_list = []
                 filter_stop_words = set(stopwords.words('english'))
                 words_no_punctuation = re.findall(r'\w+', tweet['Tweet'].lower(), flags=re.UNICODE | re.LOCALE)
@@ -75,7 +75,7 @@ def follow_twitter_pods(user_name):
                     filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
                     tweet_list.append(filtered_words)
                 flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
-                print (tweet['Name'], tweet['mUserName'], flat_tweet_list, tweet['Mentions'])
+                print (tweet['Name'], tweet['mUserName'], flat_tweet_list, tweet['Mention'])
             else:
                 tweet_list = []
                 filter_stop_words = set(stopwords.words('english'))
@@ -84,7 +84,7 @@ def follow_twitter_pods(user_name):
                     filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
                     tweet_list.append(filtered_words)
                 flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
-                print(tweet['Name'], tweet['UserName'], flat_tweet_list, tweet['Mentions'])
+                print(tweet['Name'], tweet['UserName'], flat_tweet_list, tweet['Mention'])
         except KeyError:
             continue
 
