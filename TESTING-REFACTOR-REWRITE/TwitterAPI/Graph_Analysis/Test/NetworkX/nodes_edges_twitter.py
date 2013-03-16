@@ -66,10 +66,13 @@ def twitterStream(user_name):
     with tweetstream.FilterStream("JollyJimBob", "delta0!23123", follow=follow_ids,) as stream:
         try:
             for tweet in stream:
-                if 'web' in tweet['source']:
-                    source_platform = tweet['source']
-                else:
-                    source_platform = tweet['source'].split('"')[4].split('>')[1].split('<')[0]
+                try:
+                    if 'web' in tweet['source']:
+                        source_platform = tweet['source']
+                    else:
+                        source_platform = tweet['source'].split('"')[4].split('>')[1].split('<')[0]
+                except KeyError:
+                    continue
                 if tweet['coordinates'] is None:
                     coordinates = None
                 else:
@@ -138,7 +141,7 @@ def main():
     db_name = "twitter"
     user_name = "AnonymousIRC"
     for tweet in follow_twitter_pods(user_name):
-        #write_mongo(db_name, tweet)
+        write_mongo(db_name, tweet)
         print tweet
 
 if __name__ == '__main__':
