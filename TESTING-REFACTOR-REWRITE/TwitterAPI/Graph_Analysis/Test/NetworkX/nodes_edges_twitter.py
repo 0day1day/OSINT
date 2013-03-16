@@ -64,28 +64,45 @@ def twitterStream(user_name):
     with tweetstream.FilterStream("JollyJimBob", "delta0!23123", follow=follow_ids,) as stream:
         try:
             for tweet in stream:
+                if 'web' in tweet['source']:
+                    source_platform = tweet['source']
+                else:
+                    source_platform = tweet['source'].split('"')[4].split('>')[1].split('<')[0]
+                if tweet['coordinates'] is None:
+                    coordinates = None
+                else:
+                    coordinates = tweet['coordinates']['coordinates']
                 if 'user' in tweet:
                     created_at = tweet['created_at']
                     mentions = tweet['entities']['user_mentions']
                     id_string = tweet['user']['id_str']
                     screen_name = tweet['user']['screen_name']
                     tweet_text = tweet['text']
+                    in_reply_to_id = tweet['in_reply_to_user_id_str']
+                    in_reply_to_name = tweet['in_reply_to_screen_name']
+                    re_tweet_count = tweet['retweet_count']
                     try:
                         if len(mentions) > 0:
                             for record in mentions:
                                 user_id = record['id_str']
                                 user_name = record['screen_name']
                                 user_mentions = "mentions"
-                                keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention', 'mUserId', 'mUserName']
-                                values = [created_at, id_string, screen_name, tweet_text, user_mentions, user_id, user_name]
+                                keys = ['Date', 'ID', 'Platform', 'Coord', 'Name', 'InReplyToId', 'InReplyToName',
+                                        'ReTweetCount', 'Tweet', 'Mention', 'mUserId', 'mUserName']
+                                values = [created_at, id_string, source_platform, coordinates,
+                                          screen_name, in_reply_to_id, in_reply_to_name, re_tweet_count, tweet_text,
+                                          user_mentions, user_id, user_name]
                                 mentions_dict = dict(zip(keys, values))
                                 ordered_mentions_dict = OrderedDict(sorted(mentions_dict.items(),
                                                                            key=lambda by_key: by_key[0]))
                                 yield ordered_mentions_dict
                         else:
                             no_mentions = "no_mentions"
-                            keys = ['Date', 'ID', 'Name', 'Tweet', 'Mention']
-                            values = [created_at, id_string, screen_name, tweet_text, no_mentions]
+                            keys = ['Date', 'ID', 'Platform', 'Coord', 'Name', 'InReplyToId',
+                                    'InReplyToName', 'ReTweetCount', 'Tweet', 'Mention']
+                            values = [created_at, id_string, source_platform, coordinates,
+                                      screen_name, in_reply_to_id, in_reply_to_name,
+                                      re_tweet_count, tweet_text, no_mentions]
                             no_mentions_dict = dict(zip(keys, values))
                             ordered_no_mentions_dict = OrderedDict(sorted(no_mentions_dict.items(),
                                                                           key=lambda by_key: by_key[0]))
@@ -132,7 +149,7 @@ def main():
     db_name = "twitter"
     user_name = "AnonymousIRC"
     for tweet in follow_twitter_pods(user_name):
-        write_mongo(db_name, tweet)
+        #write_mongo(db_name, tweet)
         print tweet
 
 if __name__ == '__main__':
