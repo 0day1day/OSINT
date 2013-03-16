@@ -36,6 +36,7 @@ class OrderedJsonEncoder( simplejson.JSONEncoder ):
 
 
 def encode_json(ordered_dict):
+    """Encode Ordereddict to JSON"""
     e = OrderedJsonEncoder()
     return e.encode(ordered_dict)
 
