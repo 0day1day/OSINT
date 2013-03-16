@@ -117,30 +117,17 @@ def follow_twitter_pods(user_name):
     """Generate Filtered Tweet - Add to Ordered Dict - For NL Analysis"""
     for tweet in twitterStream(user_name):
         try:
-            if tweet['mUserName']:
-                tweet_list = []
-                filter_stop_words = set(stopwords.words('english'))
-                words_no_punctuation = re.findall(r'\w+', tweet['Tweet'].lower(), flags=re.UNICODE | re.LOCALE)
-                for items in words_no_punctuation:
-                    filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
-                    tweet_list.append(filtered_words)
-                flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
-                nlp_entry = {'NLPTweet': flat_tweet_list}
-                tweet.update(nlp_entry)
-                ordered_tweet = OrderedDict(tweet)
-                yield encode_json(ordered_tweet)
-            else:
-                tweet_list = []
-                filter_stop_words = set(stopwords.words('english'))
-                words_no_punctuation = re.findall(r'\w+', tweet['Tweet'].lower(), flags=re.UNICODE | re.LOCALE)
-                for items in words_no_punctuation:
-                    filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
-                    tweet_list.append(filtered_words)
-                flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
-                nlp_entry = {'NLPTweet': flat_tweet_list}
-                tweet.update(nlp_entry)
-                ordered_tweet = OrderedDict(tweet)
-                yield encode_json(ordered_tweet)
+            tweet_list = []
+            filter_stop_words = set(stopwords.words('english'))
+            words_no_punctuation = re.findall(r'\w+', tweet['Tweet'].lower(), flags=re.UNICODE | re.LOCALE)
+            for items in words_no_punctuation:
+                filtered_words = filter(lambda w: not w in filter_stop_words, items.split())
+                tweet_list.append(filtered_words)
+            flat_tweet_list = ' '.join(list(chain.from_iterable(tweet_list)))
+            nlp_entry = {'NLPTweet': flat_tweet_list}
+            tweet.update(nlp_entry)
+            ordered_tweet = OrderedDict(tweet)
+            yield encode_json(ordered_tweet)
         except KeyError:
             continue
 
