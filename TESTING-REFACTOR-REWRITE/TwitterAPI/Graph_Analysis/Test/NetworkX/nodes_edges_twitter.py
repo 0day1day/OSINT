@@ -28,11 +28,12 @@ def write_mongo(db_name, element):
 
 class OrderedJsonEncoder( simplejson.JSONEncoder ):
     """Encode ordered dict objects into JSON for write to mongodb"""
-    def encode(self, o):
-        if isinstance(o, OrderedDict):
-            return "{" + ", ".join([self.encode(k) + ": " + self.encode(v) for (k, v) in o.iteritems()]) + "}"
+    def encode(self, ordered_dict):
+        if isinstance(ordered_dict, OrderedDict):
+            return "{" + ", ".join([self.encode(k) + ": " + self.encode(v) for (k, v)
+                                    in ordered_dict.iteritems()]) + "}"
         else:
-            return simplejson.JSONEncoder.encode(self, o)
+            return simplejson.JSONEncoder.encode(self, ordered_dict)
 
 
 def encode_json(ordered_dict):
