@@ -132,8 +132,7 @@ def follow_twitter_pods(user_name):
             nlp_entry = {'NLPTweet': flat_tweet_list}
             tweet.update(nlp_entry)
             ordered_tweet = OrderedDict(tweet)
-            yield ordered_tweet
-            #yield encode_json(ordered_tweet)
+            yield encode_json(ordered_tweet)
         except KeyError:
             continue
 
@@ -142,8 +141,8 @@ def main():
     db_name = "twitter"
     user_name = "AnonymousIRC"
     for tweet in follow_twitter_pods(user_name):
-        #write_mongo(db_name, tweet)
-        print {'Mention': tweet['Mention'], 'UserName': tweet['Name'], 'MentionsWhatUser': tweet['mUserName']}
+        write_mongo(db_name, tweet)
+        
 
 if __name__ == '__main__':
     #with DaemonContext():
