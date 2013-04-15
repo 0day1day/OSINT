@@ -86,15 +86,16 @@ def twitterStream(user_name):
                     in_reply_to_id = tweet['in_reply_to_user_id_str']
                     in_reply_to_name = tweet['in_reply_to_screen_name']
                     re_tweet_count = tweet['retweet_count']
+                    source_lang = tweet['user']['lang']
                     try:
                         if len(mentions) > 0:
                             for record in mentions:
                                 user_id = record['id_str']
                                 user_name = record['screen_name']
                                 user_mentions = "mentions"
-                                keys = ['Date', 'ID', 'Platform', 'Coord', 'Name', 'InReplyToId', 'InReplyToName',
+                                keys = ['Date', 'Lang', 'ID', 'Platform', 'Coord', 'Name', 'InReplyToId', 'InReplyToName',
                                         'ReTweetCount', 'Tweet', 'Mention', 'mUserId', 'mUserName']
-                                values = [created_at, id_string, source_platform, coordinates,
+                                values = [created_at, source_lang, id_string, source_platform, coordinates,
                                           screen_name, in_reply_to_id, in_reply_to_name, re_tweet_count, tweet_text,
                                           user_mentions, user_id, user_name]
                                 mentions_dict = dict(zip(keys, values))
@@ -103,9 +104,9 @@ def twitterStream(user_name):
                                 yield ordered_mentions_dict
                         else:
                             no_mentions = "no_mentions"
-                            keys = ['Date', 'ID', 'Platform', 'Coord', 'Name', 'InReplyToId',
+                            keys = ['Date', 'Lang', 'ID', 'Platform', 'Coord', 'Name', 'InReplyToId',
                                     'InReplyToName', 'ReTweetCount', 'Tweet', 'Mention']
-                            values = [created_at, id_string, source_platform, coordinates,
+                            values = [created_at, source_lang, id_string, source_platform, coordinates,
                                       screen_name, in_reply_to_id, in_reply_to_name,
                                       re_tweet_count, tweet_text, no_mentions]
                             no_mentions_dict = dict(zip(keys, values))
@@ -132,7 +133,8 @@ def follow_twitter_pods(user_name):
             nlp_entry = {'NLPTweet': flat_tweet_list}
             tweet.update(nlp_entry)
             ordered_tweet = OrderedDict(tweet)
-            yield encode_json(ordered_tweet)
+            yield ordered_tweet
+            #yield encode_json(ordered_tweet)
         except KeyError:
             continue
 
@@ -141,7 +143,8 @@ def main():
     db_name = "twitter"
     user_name = "AnonymousIRC"
     for tweet in follow_twitter_pods(user_name):
-        write_mongo(db_name, tweet)
+       print(tweet['Lang'], tweet['Tweet'])
+        #write_mongo(db_name, tweet)
         
 
 if __name__ == '__main__':
