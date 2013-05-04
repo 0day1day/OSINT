@@ -1,4 +1,3 @@
-
 __date__ = "May 3, 2013"
 __author__ = "AlienOne"
 __copyright__ = "GPL"
@@ -82,7 +81,7 @@ def enrichData(data_file_name):
     csv_filename = "APT-Enrichment-Product" + current_time + '.csv'
     with open(csv_filename, 'wt') as f:
         w = csv.writer(f)
-        w.writerow(["FQDN","ASN","IP Address","Port","Port","Country_Code","Country_Name","Region_Code","Region_Name","City_Name",
+        w.writerow(["FQDN","ASN","IP Address","Country_Code","Country_Name","Region_Code","Region_Name","City_Name",
                     "Latitude","Longitude","Metro_Code","Area_Code","Time_Zone","Continent_Code","Postal_Code","Isp_Name","Organization_Name","Domain","As_Number","Netspeed",
                     "User_Type","Accuracy_Radius","Country_Confidence","City_Confidence","Region_Confidence","Postal_Confidence"])
     for item in iterateFile(data_file_name):
