@@ -1,5 +1,4 @@
 
-
 __date__ = "May 3, 2013"
 __author__ = "AlienOne"
 __copyright__ = "GPL"
@@ -32,7 +31,7 @@ def getASN(ip_address):
 
 def maxMind(ipaddress):
     """MaxMind Omni GeoIP REST API"""
-    LICENSE = 'ZpYqZUlIY4Pi'
+    LICENSE = 'LICENSE_KEY_GOES_HERE'
     fields = ['country_code', 'country_name', 'region_code', 'region_name', 'city_name',
               'latitude', 'longitude', 'metro_code', 'area_code', 'time_zone', 'continent_code',
               'postal_code', 'isp_name', 'organization_name', 'domain', 'as_number', 'netspeed',
