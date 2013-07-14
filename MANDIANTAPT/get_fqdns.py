@@ -18,7 +18,7 @@ def getFqdnList(ipAddress, APIKEY, requestUrl):
 
 
 def getData():
-    response = requests.get("")
+    response = requests.get("https://github.com/alienone/OSINT/blob/master/MANDIANTAPT/APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv")
     iterResponse = response.iter_lines()
     next(iterResponse)
     for line in iterResponse:
