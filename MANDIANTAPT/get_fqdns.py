@@ -1,3 +1,14 @@
+__date__ = "July 14, 2013"
+__author__ = "AlienOne"
+__copyright__ = "GPL"
+__credits__ = ["AlienOne"]
+__license__ = "GPL"
+__version__ = "0.0.1"
+__maintainer__ = "AlienOne"
+__email__ = "Justin@alienonesecurity.com"
+__status__ = "Laboratory"
+
+
 import csv
 import requests
 import datetime
