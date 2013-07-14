@@ -7,8 +7,8 @@ import time
 def getFqdnList(ipAddress, APIKEY, requestUrl):
     parameters = {'ip': ipAddress, 'apikey': APIKEY}
     response = requests.get(requestUrl, params=parameters)
-    responseList = response.json()['resolutions']
     try:
+        responseList = response.json()['resolutions']
         fqdn_list = []
         for item in responseList:
             fqdn_list.append(item['hostname'])
@@ -34,13 +34,16 @@ def main():
         w = csv.writer(f)
         w.writerow(["FQDN","ASN","IP Address","FQDNS","Country_Code","Country_Name","Region_Code","Region_Name","City_Name","Latitude","Longitude","Metro_Code","Area_Code","Time_Zone","Continent_Code",
                     "Postal_Code","Isp_Name","Organization_Name","Domain","As_Number","Netspeed","User_Type","Accuracy_Radius","Country_Confidence","City_Confidence","Region_Confidence","Postal_Confidence"])
-    with open(csv_filename, 'at') as f:
-        for prodList in getData():
-            prodList.insert(4, getFqdnList(prodList[2], APIKEY, requestUrl))
-            print prodList
-            w = csv.writer(f)
-            w.writerow(prodList)
-            time.sleep(15)
+        with open(csv_filename, 'at') as f:
+            try:
+                for prodList in getData():
+                    prodList.insert(4, getFqdnList(prodList[2], APIKEY, requestUrl))
+                    print prodList
+                    w = csv.writer(f)
+                    w.writerow(prodList)
+                    time.sleep(15)
+            except IndexError:
+                pass
 
 
 if __name__ == '__main__':
