@@ -43,7 +43,7 @@ def getASN(ip_address):
 
 def maxMind(ipaddress):
     """MaxMind Omni GeoIP REST API"""
-    LICENSE = 'ZpYqZUlIY4Pi'
+    LICENSE = 'LICENSE KEY GOES HERE'
     fields = ['country_code', 'country_name', 'region_code', 'region_name', 'city_name',
               'latitude', 'longitude', 'metro_code', 'area_code', 'time_zone', 'continent_code',
               'postal_code', 'isp_name', 'organization_name', 'domain', 'as_number', 'netspeed',
