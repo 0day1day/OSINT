@@ -16,24 +16,27 @@ import time
 
 
 def getFqdnList(ipAddress, APIKEY, requestUrl):
-    parameters = {'ip': ipAddress, 'apikey': APIKEY}
-    response = requests.get(requestUrl, params=parameters)
     try:
+        parameters = {'ip': ipAddress, 'apikey': APIKEY}
+        response = requests.get(requestUrl, params=parameters)
         responseList = response.json()['resolutions']
         fqdn_list = []
         for item in responseList:
             fqdn_list.append(item['hostname'])
             return fqdn_list
     except KeyError:
-        pass
+        raise KeyError
 
 
 def getData():
-    response = requests.get("https://github.com/alienone/OSINT/blob/master/MANDIANTAPT/APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv")
-    iterResponse = response.iter_lines()
-    next(iterResponse)
-    for line in iterResponse:
-        yield line.split(',')
+    try:
+        response = requests.get("https://github.com/alienone/OSINT/blob/master/MANDIANTAPT/APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv")
+        iterResponse = response.iter_lines()
+        next(iterResponse)
+        for line in iterResponse:
+            yield line.split(',')
+    except EOFError:
+        raise EOFError
 
 
 def main():
@@ -55,7 +58,7 @@ def main():
                 w.writerow(element_list)
                 time.sleep(15)
     except IndexError:
-        pass
+        raise IndexError
 
 
 if __name__ == '__main__':
