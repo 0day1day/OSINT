@@ -15,6 +15,8 @@ Dependencies:
 - OSX -> brew install adns
 - Ubuntu -> sudo apt-get -y install adns
 - Fedora -> sudo yum -y install adns
+- pip install adns-python
+- pip install IPy
 - pip install dnspython
 - pip install git+https://github.com/trolldbois/python-cymru-services.git
 """
