@@ -111,7 +111,7 @@ def enrichData(data_file_name):
                                     elements['user_type'],elements['accuracy_radius'],elements['country_confidence'],elements['city_confidence'],
                                     elements['region_confidence'],elements['postal_confidence']])
             except IndexError:
-                return None
+                raise IndexError
 
 
 def main():
