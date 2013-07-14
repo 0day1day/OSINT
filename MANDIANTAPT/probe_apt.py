@@ -30,6 +30,7 @@ import dns.resolver
 from dns.resolver import NXDOMAIN
 from dns.resolver import NoAnswer
 from dns.resolver import Timeout
+from dns.resolver import NoNameservers
 from cymru.ip2asn.dns import DNSClient as ip2asn
 
 
@@ -42,7 +43,7 @@ def getASN(ip_address):
 
 def maxMind(ipaddress):
     """MaxMind Omni GeoIP REST API"""
-    LICENSE = 'LICENSE_KEY_GOES_HERE'
+    LICENSE = 'ZpYqZUlIY4Pi'
     fields = ['country_code', 'country_name', 'region_code', 'region_name', 'city_name',
               'latitude', 'longitude', 'metro_code', 'area_code', 'time_zone', 'continent_code',
               'postal_code', 'isp_name', 'organization_name', 'domain', 'as_number', 'netspeed',
@@ -67,10 +68,8 @@ def maxMind(ipaddress):
 
 def iterateFile(data_file_name):
     """Iterate over elements within a file"""
-    f = open(data_file_name, 'r')
-    for elements in f:
-        yield elements.strip()
-    f.close()
+    for line in data_file_name:
+        yield line
 
 
 def nameLookup(dns_name):
@@ -84,6 +83,8 @@ def nameLookup(dns_name):
     except NoAnswer:
         pass
     except Timeout:
+        pass
+    except NoNameservers:
         pass
 
 
@@ -114,8 +115,9 @@ def enrichData(data_file_name):
 
 
 def main():
-    data_file_name = "mandiant_apt_list.txt"
-    enrichData(data_file_name)
+    response = requests.get("https://raw.github.com/alienone/OSINT/master/MANDIANTAPT/mandiant_apt_list.txt")
+    iterResponse = response.iter_lines()
+    enrichData(iterResponse)
 
 if __name__ == '__main__':
     main()
