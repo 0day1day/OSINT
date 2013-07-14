@@ -27,7 +27,7 @@ def getData():
 
 def main():
     current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    csv_filename = "APT-Enrichment-Product" + current_time + '.csv'
+    csv_filename = "APT-VirusTotal-Enrichment-Product-" + current_time + '.csv'
     APIKEY = 'd706a20a61bbc8e0ad0bc926a2f3b6a8141da312b4bb458806f5d1a3d35a64dd'
     requestUrl = 'https://www.virustotal.com/vtapi/v2/ip-address/report'
     with open(csv_filename, 'wt') as f:

@@ -9,6 +9,13 @@ __email__ = "Justin@alienonesecurity.com"
 __status__ = "Laboratory"
 
 
+"""
+Dependencies:
+==
+- pip install dnspython
+- pip install git+https://github.com/trolldbois/python-cymru-services.git
+"""
+
 import requests
 import sys
 import argparse
@@ -78,7 +85,7 @@ def nameLookup(dns_name):
 def enrichData(data_file_name):
     """Enrich IP Address With Attribute from Maxmind and Team Cymru API"""
     current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    csv_filename = "APT-Enrichment-Product" + current_time + '.csv'
+    csv_filename = "APT-Maxmind-Enrichment-Product-" + current_time + '.csv'
     with open(csv_filename, 'wt') as f:
         w = csv.writer(f)
         w.writerow(["FQDN","ASN","IP Address","Country_Code","Country_Name","Region_Code","Region_Name","City_Name",
