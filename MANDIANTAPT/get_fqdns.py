@@ -34,16 +34,17 @@ def main():
         w = csv.writer(f)
         w.writerow(["FQDN","ASN","IP Address","FQDNS","Country_Code","Country_Name","Region_Code","Region_Name","City_Name","Latitude","Longitude","Metro_Code","Area_Code","Time_Zone","Continent_Code",
                     "Postal_Code","Isp_Name","Organization_Name","Domain","As_Number","Netspeed","User_Type","Accuracy_Radius","Country_Confidence","City_Confidence","Region_Confidence","Postal_Confidence"])
+    try:
         with open(csv_filename, 'at') as f:
-            try:
-                for prodList in getData():
-                    prodList.insert(4, getFqdnList(prodList[2], APIKEY, requestUrl))
-                    print prodList
-                    w = csv.writer(f)
-                    w.writerow(prodList)
-                    time.sleep(15)
-            except IndexError:
-                pass
+            element_list = []
+            for prodList in getData():
+                element_list.insert(4, getFqdnList(prodList[2], APIKEY, requestUrl))
+                print element_list
+                w = csv.writer(f)
+                w.writerow(element_list)
+                time.sleep(15)
+    except IndexError:
+        pass
 
 
 if __name__ == '__main__':
