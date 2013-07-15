@@ -37,21 +37,17 @@ def getData():
 
 
 def main():
-    g = Graph()
-    print g.edges.get(724)
-    # for item in g.vertices.index.lookup(asn="8560"):
-    #     g.edges.create(item.eid, "related", item.eid + 1)
-    #     #g.edges.create(item.fqdn, "related", item.asn)
-    # # try:
-    #     keys = ["fqdn", "asn", "ipaddress"]
-    #     for prodList in getData():
-    #         if len(prodList[0]) != 0:
-    #             values = [prodList[0], prodList[1], prodList[2]]
-    #             dict_object = dict(zip(keys, values))
-    #             g = Graph()
-    #             g.vertices.create(dict_object)
-    # except IndexError:
-    #     raise IndexError
+    try:
+        g = Graph()
+        keys = ["fqdn", "asn", "ipaddress"]
+        for prodList in getData():
+            if len(prodList[0]) != 0:
+                values = [prodList[0], prodList[1], prodList[2]]
+                dict_object = dict(zip(keys, values))
+                g = Graph()
+                g.vertices.create(dict_object)
+    except IndexError:
+        raise IndexError
 
 
 if __name__ == '__main__':
