@@ -24,8 +24,8 @@ def getFqdnList(ipAddress, APIKEY, requestUrl):
         for item in responseList:
             fqdn_list.append(item['hostname'])
         return fqdn_list
-    except KeyError:
-        raise KeyError
+    except IndexError:
+        raise IndexError
 
 
 def getData():
