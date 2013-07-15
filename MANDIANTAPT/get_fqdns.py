@@ -10,9 +10,7 @@ __status__ = "Laboratory"
 
 
 import requests
-import time
 from bulbs.neo4jserver import Graph
-from bulbs.neo4jserver import Graph, Config, NEO4J_URI
 
 
 def getFqdnList(ipAddress, APIKEY, requestUrl):
