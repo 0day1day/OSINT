@@ -9,10 +9,10 @@ __email__ = "Justin@alienonesecurity.com"
 __status__ = "Laboratory"
 
 
-import csv
 import requests
-import datetime
 import time
+from bulbs.neo4jserver import Graph
+from bulbs.neo4jserver import Graph, Config, NEO4J_URI
 
 
 def getFqdnList(ipAddress, APIKEY, requestUrl):
@@ -37,20 +37,21 @@ def getData():
 
 
 def main():
-    try:
-        APIKEY = 'd706a20a61bbc8e0ad0bc926a2f3b6a8141da312b4bb458806f5d1a3d35a64dd'
-        requestUrl = 'https://www.virustotal.com/vtapi/v2/ip-address/report'
-        keys = ["FQDN", "ASN", "IP Address", "FQDNS", "Country_Code", "Country_Name", "Region_Code", "Region_Name",
-                "City_Name", "Latitude", "Longitude", "Metro_Code", "Area_Code", "Time_Zone", "Continent_Code",
-                "Postal_Code", "Isp_Name", "Organization_Name", "Domain", "AsnInfo", "Netspeed", "User_Type",
-                "Accuracy_Radius", "Country_Confidence", "City_Confidence", "Region_Confidence","Postal_Confidence"]
-        for prodList in getData():
-            prodList.insert(3, getFqdnList(prodList[2], APIKEY, requestUrl))
-            dict_object = dict(zip(keys, prodList))
-            print dict_object
-            time.sleep(15)
-    except KeyError:
-        raise KeyError
+    g = Graph()
+    print g.edges.get(724)
+    # for item in g.vertices.index.lookup(asn="8560"):
+    #     g.edges.create(item.eid, "related", item.eid + 1)
+    #     #g.edges.create(item.fqdn, "related", item.asn)
+    # # try:
+    #     keys = ["fqdn", "asn", "ipaddress"]
+    #     for prodList in getData():
+    #         if len(prodList[0]) != 0:
+    #             values = [prodList[0], prodList[1], prodList[2]]
+    #             dict_object = dict(zip(keys, values))
+    #             g = Graph()
+    #             g.vertices.create(dict_object)
+    # except IndexError:
+    #     raise IndexError
 
 
 if __name__ == '__main__':
