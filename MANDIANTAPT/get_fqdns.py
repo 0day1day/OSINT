@@ -13,19 +13,6 @@ import requests
 from bulbs.neo4jserver import Graph
 
 
-def getFqdnList(ipAddress, APIKEY, requestUrl):
-    try:
-        parameters = {'ip': ipAddress, 'apikey': APIKEY}
-        response = requests.get(requestUrl, params=parameters)
-        responseList = response.json()['resolutions']
-        fqdn_list = []
-        for item in responseList:
-            fqdn_list.append(item['hostname'])
-        return fqdn_list
-    except IndexError:
-        raise IndexError
-
-
 def getData():
     response = requests.get("https://raw.github.com/alienone/OSINT/master/MANDIANTAPT/APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv")
     iterResponse = response.iter_lines()
