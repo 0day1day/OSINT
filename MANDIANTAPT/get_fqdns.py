@@ -11,6 +11,7 @@ __status__ = "Laboratory"
 
 import requests
 from bulbs.neo4jserver import Graph
+from bulbs.neo4jserver import Graph.
 
 
 def getData():
@@ -22,6 +23,8 @@ def getData():
 
 
 def main():
+    g = Graph()
+    g.edges.create(7, "related", 8)
     try:
         g = Graph()
         keys = ["fqdn", "asn", "ipaddress"]
