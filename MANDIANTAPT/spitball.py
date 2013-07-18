@@ -1,5 +1,8 @@
 import requests
-from py2neo import neo4j, node, rel
+from py2neo import neo4j
+from py2neo import node
+from py2neo import rel
+from py2neo import cypher
 
 
 def getData():
