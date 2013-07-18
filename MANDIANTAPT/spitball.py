@@ -64,8 +64,8 @@ def main():
         for prodList in getData():
             if len(prodList[0]) != 0:
                 dict_object1 = dict(zip(keys[0], [prodList[0]]))
-                dict_object2 = dict(zip(keys[2], [prodList[1]]))
-                dict_object3 = dict(zip(keys[3], [prodList[2]]))
+                dict_object2 = dict(zip(keys[1], [prodList[1]]))
+                dict_object3 = dict(zip(keys[2], [prodList[2]]))
                 print(dict_object1, dict_object2, dict_object3)
     except IndexError:
         raise IndexError
