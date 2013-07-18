@@ -1,9 +1,25 @@
 import requests
-import uuid
 from py2neo import neo4j
-from py2neo import node
-from py2neo import rel
-from py2neo import cypher
+
+"""
+Example Single Batch Processed
+
+Batch process creation 3 nodes - where all 3 nodes are related
+
+tuple of 3 nodes: ({'fqdn': 'advanbusiness.com'}, {'asn': '33626'}, {'ipaddr': '208.73.211.165'})
+
+Original Manadiant APT1 released of indicator
+
+advanbusiness.com,33626,208.73.211.165,US,United States,CA,California,Los Angeles,34.0533,-118.2549,803,213,America/Los_Angeles,NA,90071,Oversee.net,Oversee.net,domainservice.com,AS33626 Oversee.net,Corporate,business,534,99,20,60,10
+
+Relationships: Bi-directional - in_relationship & out_relationship
+
+Complete processed data set results in:
+
+Nodes: 5001
+Properties: 5001
+Relationships: 10002
+"""
 
 
 def getData():
