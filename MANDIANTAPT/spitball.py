@@ -14,15 +14,14 @@ def getData():
         yield line.split(',')
 
 
-def create_nodes():
+def create_nodes(*args):
     try:
-        keys = ["fqdn", "asn", "ipaddr"]
         list_dicts = []
         for prodList in getData():
             if len(prodList[0]) != 0:
-                dict_object1 = dict(zip([keys[0]], [prodList[0]]))
-                dict_object2 = dict(zip([keys[1]], [prodList[1]]))
-                dict_object3 = dict(zip([keys[2]], [prodList[2]]))
+                dict_object1 = dict(zip([args[0]], [prodList[0]]))
+                dict_object2 = dict(zip([args[1]], [prodList[1]]))
+                dict_object3 = dict(zip([args[2]], [prodList[2]]))
                 tuple_dicts = (dict_object1, dict_object2, dict_object3)
                 list_dicts.append(tuple_dicts)
         for nodeObj in list_dicts:
@@ -35,10 +34,9 @@ def create_nodes():
 
 def main():
     graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
-    for nodes in create_nodes():
-        # key_val1 = uuid.uuid4()
-        # key_val2 = uuid.uuid4()
-        # key_val3 = uuid.uuid4()
+    args = ["fqdn", "asn", "ipaddr"]
+    for nodes in create_nodes(*args):
+        print nodes
         graph_db.create(
             nodes[0], nodes[1], nodes[2],
             (0, "RELATED", 1),
