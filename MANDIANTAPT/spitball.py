@@ -22,7 +22,16 @@ def create_node_properties():
 
 
 def create_nodes():
-    pass
+    try:
+        keys = ["fqdn", "asn", "ipaddr"]
+        for prodList in getData():
+            if len(prodList[0]) != 0:
+                dict_object1 = dict(zip([keys[0]], [prodList[0]]))
+                dict_object2 = dict(zip([keys[1]], [prodList[1]]))
+                dict_object3 = dict(zip([keys[2]], [prodList[2]]))
+                yield dict_object1, dict_object2, dict_object3
+    except IndexError:
+        raise IndexError
 
 
 def create_relationship_properties():
@@ -59,16 +68,9 @@ def create_relationships_index():
 
 def main():
     graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
-    try:
-        keys = ["fqdn", "asn", "ipaddr"]
-        for prodList in getData():
-            if len(prodList[0]) != 0:
-                dict_object1 = dict(zip([keys[0]], [prodList[0]]))
-                dict_object2 = dict(zip([keys[1]], [prodList[1]]))
-                dict_object3 = dict(zip([keys[2]], [prodList[2]]))
-                print(dict_object1, dict_object2, dict_object3)
-    except IndexError:
-        raise IndexError
+    for node in create_nodes():
+        print node
+
 
 
 if __name__ == '__main__':
