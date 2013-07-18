@@ -2,14 +2,56 @@ import requests
 from py2neo import neo4j, node, rel
 
 
-
-
 def getData():
     response = requests.get("https://raw.github.com/alienone/OSINT/master/MANDIANTAPT/APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv")
     iterResponse = response.iter_lines()
     next(iterResponse)
     for line in iterResponse:
         yield line.split(',')
+
+
+def create_graph():
+    pass
+
+
+def create_node_properties():
+    pass
+
+
+def create_nodes():
+    pass
+
+
+def create_relationship_properties():
+    pass
+
+
+def create_relationships():
+    pass
+
+
+def generate_node_properties():
+    pass
+
+
+def generate_rel_properties():
+    pass
+
+
+def generate_nodes():
+    pass
+
+
+def generate_rels():
+    pass
+
+
+def create_nodes_index():
+    pass
+
+
+def create_relationships_index():
+    pass
 
 
 def main():
