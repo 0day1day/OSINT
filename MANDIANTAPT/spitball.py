@@ -32,6 +32,8 @@ def create_nodes():
                 yield dict_object1, dict_object2, dict_object3
     except IndexError:
         raise IndexError
+    except KeyError:
+        raise KeyError
 
 
 def create_relationship_properties():
