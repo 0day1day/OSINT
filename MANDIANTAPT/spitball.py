@@ -60,14 +60,12 @@ def create_relationships_index():
 def main():
     graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
     try:
-        key1 = ["fqdn"]
-        key2 = ["asn"]
-        key3 = ["ipaddr"]
+        keys = ["fqdn", "asn", "ipaddr"]
         for prodList in getData():
             if len(prodList[0]) != 0:
-                dict_object1 = dict(zip(key1, [prodList[0]]))
-                dict_object2 = dict(zip(key2, [prodList[1]]))
-                dict_object3 = dict(zip(key3, [prodList[2]]))
+                dict_object1 = dict(zip(keys[0], [prodList[0]]))
+                dict_object2 = dict(zip(keys[2], [prodList[1]]))
+                dict_object3 = dict(zip(keys[3], [prodList[2]]))
                 print(dict_object1, dict_object2, dict_object3)
     except IndexError:
         raise IndexError
