@@ -1,4 +1,5 @@
 import requests
+import uuid
 from py2neo import neo4j
 from py2neo import node
 from py2neo import rel
@@ -13,66 +14,40 @@ def getData():
         yield line.split(',')
 
 
-def create_graph():
-    pass
-
-
-def create_node_properties():
-    pass
-
-
 def create_nodes():
     try:
         keys = ["fqdn", "asn", "ipaddr"]
+        list_dicts = []
         for prodList in getData():
             if len(prodList[0]) != 0:
                 dict_object1 = dict(zip([keys[0]], [prodList[0]]))
                 dict_object2 = dict(zip([keys[1]], [prodList[1]]))
                 dict_object3 = dict(zip([keys[2]], [prodList[2]]))
-                yield dict_object1, dict_object2, dict_object3
+                tuple_dicts = (dict_object1, dict_object2, dict_object3)
+                list_dicts.append(tuple_dicts)
+        for nodeObj in list_dicts:
+            yield nodeObj
     except IndexError:
         raise IndexError
     except KeyError:
         raise KeyError
 
 
-def create_relationship_properties():
-    pass
-
-
-def create_relationships():
-    pass
-
-
-def generate_node_properties():
-    pass
-
-
-def generate_rel_properties():
-    pass
-
-
-def generate_nodes():
-    pass
-
-
-def generate_rels():
-    pass
-
-
-def create_nodes_index():
-    pass
-
-
-def create_relationships_index():
-    pass
-
-
 def main():
     graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
-    for node in create_nodes():
-        print node
-
+    for nodes in create_nodes():
+        # key_val1 = uuid.uuid4()
+        # key_val2 = uuid.uuid4()
+        # key_val3 = uuid.uuid4()
+        graph_db.create(
+            nodes[0], nodes[1], nodes[2],
+            (0, "RELATED", 1),
+            (0, "RELATED", 2),
+            (1, "RELATED", 0),
+            (1, "RELATED", 2),
+            (2, "RELATED", 0),
+            (2, "RELATED", 1),
+        )
 
 
 if __name__ == '__main__':
