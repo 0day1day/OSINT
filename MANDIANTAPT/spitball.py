@@ -38,8 +38,9 @@ def create_nodes(*args):
                 dict_object1 = dict(zip([args[0]], [prodList[0]]))
                 dict_object2 = dict(zip([args[1]], [prodList[1]]))
                 dict_object3 = dict(zip([args[2]], [prodList[2]]))
-                tuple_dicts = (dict_object1, dict_object2, dict_object3)
-                list_dicts.append(tuple_dicts)
+                dict_object1.update(dict_object2)
+                dict_object1.update(dict_object3)
+                list_dicts.append(dict_object1)
         for nodeObj in list_dicts:
             yield nodeObj
     except IndexError:
@@ -53,15 +54,15 @@ def main():
     args = ["fqdn", "asn", "ipaddr"]
     for nodes in create_nodes(*args):
         print nodes
-        graph_db.create(
-            nodes[0], nodes[1], nodes[2],
-            (0, "RELATED", 1),
-            (0, "RELATED", 2),
-            (1, "RELATED", 0),
-            (1, "RELATED", 2),
-            (2, "RELATED", 0),
-            (2, "RELATED", 1),
-        )
+        # graph_db.create(
+        #     nodes[0], nodes[1], nodes[2],
+        #     (0, "RELATED", 1),
+        #     (0, "RELATED", 2),
+        #     (1, "RELATED", 0),
+        #     (1, "RELATED", 2),
+        #     (2, "RELATED", 0),
+        #     (2, "RELATED", 1),
+        # )
 
 
 if __name__ == '__main__':
