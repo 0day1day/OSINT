@@ -35,13 +35,7 @@ def create_nodes(*args):
         list_dicts = []
         for prodList in getData():
             if len(prodList[0]) != 0:
-                dict_object = dict(zip([args], [prodList]))
-                # dict_object1 = dict(zip([args[0]], [prodList[0]]))
-                # dict_object2 = dict(zip([args[1]], [prodList[1]]))
-                # dict_object3 = dict(zip([args[2]], [prodList[2]]))
-                # dict_object1.update(dict_object2)
-                # dict_object1.update(dict_object3)
-                # list_dicts.append(dict_object1)
+                dict_object = dict(zip(args, prodList))
                 list_dicts.append(dict_object)
         for nodeObj in list_dicts:
             yield nodeObj
