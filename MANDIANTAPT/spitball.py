@@ -34,7 +34,7 @@ def getData():
         yield line.split(',')
 
 
-def create_nodes(*args):
+def create_nodes(args=list):
     try:
         list_dicts = []
         for prodList in getData():
@@ -48,28 +48,28 @@ def create_nodes(*args):
         raise KeyError
 
 
-def main():
-    graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
-    args = ["fqdn", "asn", "ipaddr"]
-    gd = DataFrame(create_nodes(*args)).groupby('asn')
+def clusterData(args, column_name):
+    gd = DataFrame(create_nodes(args)).groupby(column_name)
     asn_groups = [x[0] for x in gd]
     for asn in asn_groups:
         df = gd.get_group(asn)
         create_dict = [{k: df.values[i][v] for v, k in enumerate(df.columns)} for i in range(len(df))]
-        print create_dict
+        yield create_dict
 
 
-
-
-        # graph_db.create(
-        #     nodes[0], nodes[1], nodes[2],
-        #     (0, "RELATED", 1),
-        #     (0, "RELATED", 2),
-        #     (1, "RELATED", 0),
-        #     (1, "RELATED", 2),
-        #     (2, "RELATED", 0),
-        #     (2, "RELATED", 1),
-        # )
+def main():
+    graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
+    args = ["fqdn", "asn", "ipaddr"]
+    column_name = 'asn'
+    all_nodes = []
+    for cluster in clusterData(args, column_name):
+        for i, e1 in enumerate(cluster):
+            all_nodes.append(e1)
+            for j, e2 in enumerate(cluster):
+                if e1 != e2:
+                    if e1['asn'] != '8560':
+                        all_nodes.append((i, "RELATED", j))
+    graph_db.create(all_nodes)
 
 
 if __name__ == '__main__':
