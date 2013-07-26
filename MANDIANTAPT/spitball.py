@@ -1,5 +1,9 @@
 import requests
 from py2neo import neo4j
+import networkx as net
+from networkx import algorithms
+from pandas import DataFrame
+
 
 """
 Example Single Batch Processed
@@ -37,8 +41,7 @@ def create_nodes(*args):
             if len(prodList[0]) != 0:
                 dict_object = dict(zip(args, prodList))
                 list_dicts.append(dict_object)
-        for nodeObj in list_dicts:
-            yield nodeObj
+        return list_dicts
     except IndexError:
         raise IndexError
     except KeyError:
@@ -48,8 +51,16 @@ def create_nodes(*args):
 def main():
     graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
     args = ["fqdn", "asn", "ipaddr"]
-    for nodes in create_nodes(*args):
-        print nodes
+    gd = DataFrame(create_nodes(*args)).groupby('asn')
+    asn_groups = [x[0] for x in gd]
+    for asn in asn_groups:
+        df = gd.get_group(asn)
+        create_dict = [{k: df.values[i][v] for v, k in enumerate(df.columns)} for i in range(len(df))]
+        print create_dict
+
+
+
+
         # graph_db.create(
         #     nodes[0], nodes[1], nodes[2],
         #     (0, "RELATED", 1),
