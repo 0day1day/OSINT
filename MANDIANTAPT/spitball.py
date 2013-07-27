@@ -4,6 +4,7 @@ from pandas import DataFrame
 
 
 def getData():
+    """Get CSV Mandiant Data Set out list data structure"""
     response = requests.get("https://raw.github.com/alienone/OSINT/master/MANDIANTAPT/APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv")
     iterResponse = response.iter_lines()
     next(iterResponse)
@@ -12,6 +13,7 @@ def getData():
 
 
 def create_nodes(args=list):
+    """Create list of dicts - each dict will represent a node"""
     list_dicts = []
     for prodList in getData():
         if len(prodList[0]) != 0:
@@ -21,6 +23,7 @@ def create_nodes(args=list):
 
 
 def clusterData(args, column_name):
+    """Leverage Panadas Groupby to cluster nodes by ASN"""
     gd = DataFrame(create_nodes(args)).groupby(column_name)
     asn_groups = [x[0] for x in gd]
     for asn in asn_groups:
@@ -30,6 +33,7 @@ def clusterData(args, column_name):
 
 
 def main():
+    """Batch create nodes and node relationships in Neo4j"""
     graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
     args = ["fqdn", "asn", "ipaddr"]
     column_name = 'asn'
