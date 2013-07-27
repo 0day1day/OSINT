@@ -12,17 +12,12 @@ def getData():
 
 
 def create_nodes(args=list):
-    try:
-        list_dicts = []
-        for prodList in getData():
-            if len(prodList[0]) != 0:
-                dict_object = dict(zip(args, prodList))
-                list_dicts.append(dict_object)
-        return list_dicts
-    except IndexError:
-        raise IndexError
-    except KeyError:
-        raise KeyError
+    list_dicts = []
+    for prodList in getData():
+        if len(prodList[0]) != 0:
+            dict_object = dict(zip(args, prodList))
+            list_dicts.append(dict_object)
+    return list_dicts
 
 
 def clusterData(args, column_name):
