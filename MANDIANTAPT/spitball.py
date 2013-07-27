@@ -4,7 +4,7 @@ from pandas import DataFrame
 
 
 def getData():
-    """Get CSV Mandiant Data Set out list data structure"""
+    """Get CSV Mandiant Data Set - output list data structure"""
     response = requests.get("https://raw.github.com/alienone/OSINT/master/MANDIANTAPT/APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv")
     iterResponse = response.iter_lines()
     next(iterResponse)
