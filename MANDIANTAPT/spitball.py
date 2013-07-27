@@ -1,11 +1,11 @@
 __date__ = "July 27, 2013"
 __author__ = "AlienOne"
 __copyright__ = "GPL"
-__credits__ = ["Justin Jessup", "Adam Reber"]
+__credits__ = ["AlienOne", "zer0h0ur"]
 __license__ = "GPL"
 __version__ = "0.0.1"
 __maintainer__ = "AlienOne"
-__email__ = "Justin@alienonesecurity.com"
+__email__ = "ali3n0ne@alienone.org"
 __status__ = "Prototype"
 
 
