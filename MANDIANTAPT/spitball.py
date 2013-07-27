@@ -23,7 +23,7 @@ def create_nodes(args=list):
 
 
 def clusterData(args, column_name):
-    """Leverage Panadas Groupby to cluster nodes by ASN"""
+    """Leverage Panadas Groupby to cluster nodes by ASN - Then convert resulting DataFrames in list dicts by cluster"""
     gd = DataFrame(create_nodes(args)).groupby(column_name)
     asn_groups = [x[0] for x in gd]
     for asn in asn_groups:
