@@ -1,3 +1,14 @@
+__date__ = "July 27, 2013"
+__author__ = "AlienOne"
+__copyright__ = "GPL"
+__credits__ = ["Justin Jessup", "Adam Reber"]
+__license__ = "GPL"
+__version__ = "0.0.1"
+__maintainer__ = "AlienOne"
+__email__ = "Justin@alienonesecurity.com"
+__status__ = "Prototype"
+
+
 import requests
 from py2neo import neo4j
 from pandas import DataFrame
@@ -35,8 +46,8 @@ def clusterData(args, column_name):
 def main():
     """Batch create nodes and node relationships in Neo4j"""
     graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
-    args = ["fqdn", "asn", "ipaddr"]
-    column_name = 'asn'
+    args = ["FQDN", "ASN", "IP"]
+    column_name = 'ASN'
     all_nodes = []
     for cluster in clusterData(args, column_name):
         for i, e1 in enumerate(cluster):
@@ -44,7 +55,8 @@ def main():
             for j, e2 in enumerate(cluster):
                 if e1 != e2:
                     all_nodes.append((i, "RELATED", j))
-    graph_db.create(*all_nodes)
+    sorted_nodes = sorted(all_nodes)
+    graph_db.create(*sorted_nodes)
 
 
 if __name__ == '__main__':
