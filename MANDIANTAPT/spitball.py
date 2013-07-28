@@ -45,7 +45,7 @@ def clusterData(args, column_name):
 
 def main():
     """Batch create nodes and node relationships in Neo4j"""
-    graph_db = neo4j.GraphDatabaseService("http://localhost:7474/db/data/")
+    graph_db = neo4j.GraphDatabaseService("http://192.168.2.2:7474/db/data/")
     args = ["FQDN", "ASN", "IP"]
     column_name = 'ASN'
     all_nodes = []
