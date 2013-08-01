@@ -12,6 +12,7 @@ __status__ = "Prototype"
 import requests
 from py2neo import neo4j
 from pandas import DataFrame
+from itertools import groupby
 
 
 def getData():
@@ -56,7 +57,8 @@ def main():
                 if e1 != e2:
                     all_nodes.append((i, "RELATED", j))
     sorted_nodes = sorted(all_nodes)
-    graph_db.create(*sorted_nodes)
+    unique_nodes_relationships = [ key for key,_ in groupby(sorted_nodes)]
+    graph_db.create(*unique_nodes_relationships)
 
 
 if __name__ == '__main__':
