@@ -44,21 +44,26 @@ def clusterData(args, column_name):
         yield create_dict
 
 
+def normalize_cluster(cluster):
+    normalized_cluster = {'ASN': [], 'FQDN': []}
+    del normalized_cluster['ASN'][:]
+    del normalized_cluster['FQDN'][:]
+    for node in cluster:
+        for k, v in node.items():
+            normalized_cluster[k].append(v)
+    return normalized_cluster
+
+
 def main():
     """Batch create nodes and node relationships in Neo4j"""
-    graph_db = neo4j.GraphDatabaseService("http://192.168.2.2:7474/db/data/")
-    args = ["FQDN", "ASN", "IP"]
+    # graph_db = neo4j.GraphDatabaseService("http://192.168.2.2:7474/db/data/")
+    results_list = []
+    args = ["FQDN", "ASN"]
     column_name = 'ASN'
-    all_nodes = []
     for cluster in clusterData(args, column_name):
-        for i, e1 in enumerate(cluster):
-            all_nodes.append(e1)
-            for j, e2 in enumerate(cluster):
-                if e1 != e2:
-                    all_nodes.append((i, "RELATED", j))
-    sorted_nodes = sorted(all_nodes)
-    unique_nodes_relationships = [ key for key,_ in groupby(sorted_nodes)]
-    graph_db.create(*unique_nodes_relationships)
+        results_list.append(normalize_cluster(cluster))
+    for item in results_list:
+        print(list(set(item['ASN'])), list(set(item['FQDN'])))
 
 
 if __name__ == '__main__':
