@@ -1,9 +1,9 @@
-__date__ = "July 27, 2013"
+__date__ = "February 19, 2014"
 __author__ = "AlienOne"
 __copyright__ = "GPL"
-__credits__ = ["AlienOne", "zer0h0ur"]
+__credits__ = ["AlienOne"]
 __license__ = "GPL"
-__version__ = "0.0.1"
+__version__ = "0.0.5"
 __maintainer__ = "AlienOne"
 __email__ = "ali3n0ne@alienone.org"
 __status__ = "Prototype"
