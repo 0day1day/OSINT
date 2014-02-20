@@ -10,9 +10,9 @@ __status__ = "Prototype"
 
 
 import requests
+import csv
 from py2neo import neo4j
 from pandas import DataFrame
-from itertools import groupby
 
 
 def getData():
@@ -54,24 +54,38 @@ def normalize_cluster(cluster):
     return normalized_cluster
 
 
-def normalized_nodes():
+def get_attributes(asn_str, csv_file):
+    with open(csv_file, 'rb') as fh:
+        for item in fh:
+            data = item.split(',')
+            if asn_str in data:
+                    lat_lon = data[8:10]
+                    country = data[4:5]
+                    return lat_lon, country
+
+
+def normalized_nodes(csv_file):
     results_list = []
     args = ["FQDN", "ASN"]
     column_name = 'ASN'
     for cluster in clusterData(args, column_name):
         results_list.append(normalize_cluster(cluster))
     for node in results_list:
-        keys = ['ASN', 'FQDN']
-        values = list(set(node['ASN']))[0], list(set(node['FQDN']))
+        asn_str = list(set(node['ASN']))[0]
+        keys = ['ASN', 'FQDN', 'LatLon', 'Locale']
+        values = list(set(node['ASN']))[0], list(set(node['FQDN'])), get_attributes(asn_str, csv_file)[0], \
+                 get_attributes(asn_str, csv_file)[1][0]
         dict_obj = dict(zip(keys, values))
         yield dict_obj
 
 
 def main():
     """Batch create nodes and node relationships in Neo4j"""
+    csv_file = "APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv"
     # graph_db = neo4j.GraphDatabaseService("http://192.168.2.2:7474/db/data/")
-    for node in normalized_nodes():
-        print node
+    for node in normalized_nodes(csv_file):
+        if node['Locale'] == 'Singapore':
+            print node
 
 
 if __name__ == '__main__':
