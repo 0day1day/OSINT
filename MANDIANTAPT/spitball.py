@@ -54,16 +54,24 @@ def normalize_cluster(cluster):
     return normalized_cluster
 
 
-def main():
-    """Batch create nodes and node relationships in Neo4j"""
-    # graph_db = neo4j.GraphDatabaseService("http://192.168.2.2:7474/db/data/")
+def normalized_nodes():
     results_list = []
     args = ["FQDN", "ASN"]
     column_name = 'ASN'
     for cluster in clusterData(args, column_name):
         results_list.append(normalize_cluster(cluster))
-    for item in results_list:
-        print(list(set(item['ASN'])), list(set(item['FQDN'])))
+    for node in results_list:
+        keys = ['ASN', 'FQDN']
+        values = list(set(node['ASN']))[0], list(set(node['FQDN']))
+        dict_obj = dict(zip(keys, values))
+        yield dict_obj
+
+
+def main():
+    """Batch create nodes and node relationships in Neo4j"""
+    # graph_db = neo4j.GraphDatabaseService("http://192.168.2.2:7474/db/data/")
+    for node in normalized_nodes():
+        print node
 
 
 if __name__ == '__main__':
