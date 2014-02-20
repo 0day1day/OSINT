@@ -73,7 +73,8 @@ def normalized_nodes(csv_file):
     for node in results_list:
         asn_str = list(set(node['ASN']))[0]
         keys = ['ASN', 'FQDN', 'LatLon', 'Locale']
-        values = list(set(node['ASN']))[0], list(set(node['FQDN'])), get_attributes(asn_str, csv_file)[0], \
+        values = list(set(node['ASN']))[0], list(set(node['FQDN'])), \
+        get_attributes(asn_str, csv_file)[0], \
                  get_attributes(asn_str, csv_file)[1][0]
         dict_obj = dict(zip(keys, values))
         yield dict_obj
@@ -84,7 +85,7 @@ def main():
     csv_file = "APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv"
     # graph_db = neo4j.GraphDatabaseService("http://192.168.2.2:7474/db/data/")
     for node in normalized_nodes(csv_file):
-        if node['Locale'] == 'Singapore':
+        if 'Singapore' in node['Locale']:
             print node
 
 
