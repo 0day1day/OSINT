@@ -44,6 +44,7 @@ def clusterData(args, column_name):
 
 
 def normalize_cluster(cluster):
+    """Return dicitonary object with value lists"""
     normalized_cluster = {'ASN': [], 'FQDN': []}
     del normalized_cluster['ASN'][:]
     del normalized_cluster['FQDN'][:]
@@ -54,6 +55,7 @@ def normalize_cluster(cluster):
 
 
 def get_attributes(asn_str, csv_file):
+    """Lookup additional attributes to add to final product"""
     with open(csv_file, 'rb') as fh:
         for item in fh:
             data = item.split(',')
@@ -64,6 +66,7 @@ def get_attributes(asn_str, csv_file):
 
 
 def normalized_nodes(csv_file):
+    """Remove duplicates, add additional attributes"""
     results_list = []
     args = ["FQDN", "ASN"]
     column_name = 'ASN'
