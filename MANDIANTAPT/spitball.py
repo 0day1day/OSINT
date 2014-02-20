@@ -11,7 +11,6 @@ __status__ = "Prototype"
 
 import requests
 import csv
-from py2neo import neo4j
 from pandas import DataFrame
 
 
@@ -81,9 +80,8 @@ def normalized_nodes(csv_file):
 
 
 def main():
-    """Batch create nodes and node relationships in Neo4j"""
+    """Display nodes and write Country, Latitude/Longitude to CSV for D3.js World Map Display"""
     csv_file = "APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv"
-    # graph_db = neo4j.GraphDatabaseService("http://192.168.2.2:7474/db/data/")
     for node in normalized_nodes(csv_file):
         if 'Singapore' in node['Locale']:
             print node
