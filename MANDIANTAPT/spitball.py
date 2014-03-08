@@ -1,9 +1,9 @@
-__date__ = "February 19, 2014"
+__date__ = "03082014"
 __author__ = "AlienOne"
 __copyright__ = "GPL"
 __credits__ = ["AlienOne"]
 __license__ = "GPL"
-__version__ = "0.0.5"
+__version__ = "0.0.7"
 __maintainer__ = "AlienOne"
 __email__ = "ali3n0ne@alienone.org"
 __status__ = "Prototype"
@@ -60,9 +60,10 @@ def get_attributes(asn_str, csv_file):
         for item in fh:
             data = item.split(',')
             if asn_str in data:
+                    asn_ip = data[2]
                     lat_lon = data[8:10]
                     country = data[4:5]
-                    return lat_lon, country
+                    return lat_lon, country, asn_ip
 
 
 def normalized_nodes(csv_file):
@@ -74,8 +75,8 @@ def normalized_nodes(csv_file):
         results_list.append(normalize_cluster(cluster))
     for node in results_list:
         asn_str = list(set(node['ASN']))[0]
-        keys = ['ASN', 'FQDN', 'LatLon', 'Locale']
-        values = list(set(node['ASN']))[0], list(set(node['FQDN'])), \
+        keys = ['ASN', 'ASN IP', 'FQDN', 'LatLon', 'Locale']
+        values = list(set(node['ASN']))[0], get_attributes(asn_str, csv_file)[2], list(set(node['FQDN'])), \
         get_attributes(asn_str, csv_file)[0], \
                  get_attributes(asn_str, csv_file)[1][0]
         dict_obj = dict(zip(keys, values))
