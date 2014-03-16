@@ -100,8 +100,7 @@ def main():
     """Display nodes and write Country, Latitude/Longitude to CSV for D3.js World Map Display"""
     csv_file = "APT-Maxmind-Enrichment-Product-2013-07-14-09-25-42.csv"
     for node in normalized_nodes(csv_file):
-        if 'Singapore' in node['Locale']:
-            print node
+        print(node)
 
 
 if __name__ == '__main__':
