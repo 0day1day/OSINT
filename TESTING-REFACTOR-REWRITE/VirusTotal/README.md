@@ -1,7 +1,7 @@
 ###Malc0de + Virustotal - ArcSight Use Case
  
 ####Data Sources 
-- www.malc0de.com/rss
+- malc0de.com/rss
 - www.virustotal.com
 
 ####Installation & Python Environment Configuration
